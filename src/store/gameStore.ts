@@ -1,38 +1,55 @@
 import { create } from "zustand";
-import { GameState, Difficulty } from "@/types/game";
+import { GameState, Player, StageNumber, AvatarId } from "@/types/game";
 
 interface GameStore extends GameState {
-  setDifficulty: (difficulty: Difficulty) => void;
+  setPlayer: (player: Partial<Player>) => void;
+  setStage: (stage: StageNumber) => void;
+  advanceStage: () => void;
   setSettings: (settings: Partial<GameState["settings"]>) => void;
   resetGame: () => void;
 }
 
+const DEFAULT_PLAYER: Player = {
+  name: "",
+  avatar: "profile-1" as AvatarId,
+};
+
 export const useGameStore = create<GameStore>((set) => ({
+  player: DEFAULT_PLAYER,
   cards: [],
   flippedCards: [],
   moves: 0,
   time: 0,
-  score: 0,
+  accumulatedTimeMs: 0, 
+  currentStage: 1,
   isPlaying: false,
   isPaused: false,
-  difficulty: "normal",
   settings: {
     soundEnabled: true,
-    hintEnabled: false,
-    timerEnabled: true,
   },
-  setDifficulty: (difficulty) => set({ difficulty }),
-  setSettings: (settings) =>
+
+  setPlayer: (partial) =>
+    set((state) => ({ player: { ...state.player, ...partial } })),
+
+  setStage: (stage) => set({ currentStage: stage }),
+
+  advanceStage: () =>
     set((state) => ({
-      settings: { ...state.settings, ...settings },
+      currentStage:
+        state.currentStage < 2 ? ((state.currentStage + 1) as StageNumber) : 2,
     })),
+
+  setSettings: (partial) =>
+    set((state) => ({ settings: { ...state.settings, ...partial } })),
+
   resetGame: () =>
     set({
       cards: [],
       flippedCards: [],
       moves: 0,
       time: 0,
-      score: 0,
+      accumulatedTimeMs: 0,
+      currentStage: 1,
       isPlaying: false,
       isPaused: false,
     }),
