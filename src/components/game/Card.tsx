@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { AvatarId } from "@/types/game";
 import { getCardImageSrc } from "@/constants/gameImages";
+import { CardImageId } from "@/types/game";
 
 interface CardProps {
   id: string;
-  imageId: AvatarId;
+  imageId: CardImageId;
   isFlipped: boolean;
   isMatched: boolean;
   onClick: () => void;
