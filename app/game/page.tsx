@@ -85,8 +85,7 @@ export default function GamePage() {
   const stageStartMsRef = useRef<number>(0); // Date.now() when current stage started
   const accumulatedMsRef = useRef<number>(0); // running sum of completed-stage durations
   const totalMsRef = useRef<number>(0); // final value used by WinModal + leaderboard
-  const currentStageRef = useRef(currentStage);
-  currentStageRef.current = currentStage;
+  const currentStageRef = useRef<StageNumber>(1);
 
   // ── Side-effects ────────────────────────────────────────────────────────────
 
@@ -99,6 +98,11 @@ export default function GamePage() {
   useEffect(() => {
     audioManager.setEnabled(settings.soundEnabled);
   }, [settings.soundEnabled]);
+
+  // Sync currentStage ref
+  useEffect(() => {
+    currentStageRef.current = currentStage;
+  }, [currentStage]);
 
   // ── Game-event handlers ─────────────────────────────────────────────────────
 

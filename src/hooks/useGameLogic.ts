@@ -1,3 +1,6 @@
+// ============================================================
+// src/hooks/useGameLogic.ts
+// ============================================================
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Card, StageNumber } from "@/types/game";
 import { useGameStore } from "@/store/gameStore";
@@ -25,19 +28,19 @@ export function useGameLogic({ onWin, onGameOver }: UseGameLogicOptions) {
   const [timeLeft, setTimeLeft] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // Keep callbacks fresh without re-triggering effects
+  // Always-fresh refs — safe to read inside effects and callbacks
   const onWinRef = useRef(onWin);
   const onGameOverRef = useRef(onGameOver);
+  const stageRef = useRef(currentStage);
+  const timeLeftRef = useRef(timeLeft);
+  const totalCardsRef = useRef(0);
+
   useEffect(() => {
     onWinRef.current = onWin;
   });
   useEffect(() => {
     onGameOverRef.current = onGameOver;
   });
-
-  // Stage ref — always reflects latest value inside async closures
-  const stageRef = useRef(currentStage);
-  const timeLeftRef = useRef(0);
   useEffect(() => {
     stageRef.current = currentStage;
   }, [currentStage]);
@@ -50,13 +53,14 @@ export function useGameLogic({ onWin, onGameOver }: UseGameLogicOptions) {
   const initializeGame = useCallback(
     (stage: StageNumber = currentStage) => {
       const config = STAGE_CONFIG[stage];
-      // Randomly pick `pairs` images from the full pool each game
       const selected = shuffleArray([...CARD_IMAGES]).slice(0, config.pairs);
       const cardPairs = selected.flatMap((imageId, index) => [
         { id: `${index}-a`, imageId, isFlipped: false, isMatched: false },
         { id: `${index}-b`, imageId, isFlipped: false, isMatched: false },
       ]);
-      setCards(shuffleArray(cardPairs));
+      const shuffled = shuffleArray(cardPairs);
+      totalCardsRef.current = shuffled.length;
+      setCards(shuffled);
       setFlippedCards([]);
       setMatchedCards([]);
       setMoves(0);
@@ -74,6 +78,7 @@ export function useGameLogic({ onWin, onGameOver }: UseGameLogicOptions) {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
+          // Use functional update — no extra setState call in effect body
           setIsPlaying(false);
           onGameOverRef.current();
           return 0;
@@ -105,7 +110,27 @@ export function useGameLogic({ onWin, onGameOver }: UseGameLogicOptions) {
         if (first && second && first.imageId === second.imageId) {
           if (settings.soundEnabled)
             setTimeout(() => audioManager.play("match"), 300);
-          setMatchedCards((prev) => [...prev, newFlipped[0], newFlipped[1]]);
+
+          setMatchedCards((prev) => {
+            const next = [...prev, newFlipped[0], newFlipped[1]];
+
+            // Check win inside the updater — no cascading setState in effect
+            if (next.length === totalCardsRef.current) {
+              setIsPlaying(false);
+              if (settings.soundEnabled)
+                setTimeout(() => audioManager.play("win"), 500);
+              // Defer callback so React finishes this render first
+              setTimeout(() => {
+                onWinRef.current({
+                  stage: stageRef.current,
+                  timeLeft: timeLeftRef.current,
+                });
+              }, 0);
+            }
+
+            return next;
+          });
+
           setFlippedCards([]);
         } else {
           if (settings.soundEnabled)
@@ -116,23 +141,6 @@ export function useGameLogic({ onWin, onGameOver }: UseGameLogicOptions) {
     },
     [isPlaying, flippedCards, matchedCards, cards, settings.soundEnabled],
   );
-
-  // ------ Win condition -------------------------------------
-
-  useEffect(() => {
-    if (!isPlaying) return;
-    if (matchedCards.length === 0 || matchedCards.length !== cards.length)
-      return;
-
-    setIsPlaying(false);
-    if (settings.soundEnabled) setTimeout(() => audioManager.play("win"), 500);
-
-    // Pass only stage — timing is measured in game page via Date.now()
-    onWinRef.current({
-      stage: stageRef.current,
-      timeLeft: timeLeftRef.current,
-    });
-  }, [matchedCards, cards, isPlaying, settings.soundEnabled]);
 
   // ------ Hint ----------------------------------------------
 
