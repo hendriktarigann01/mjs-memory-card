@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -19,9 +20,6 @@ import { STAGE_CONFIG } from "@/constants/gameConfig";
 import { StageNumber } from "@/types/game";
 import { formatTime, cn } from "@/lib/utils";
 
-// "countdown" — 3-2-1 screen shown before every stage (including the stage 1 → 2 transition)
-// "win"       — player cleared both stages
-// "game-over" — timer ran out
 type OverlayKind = "countdown" | "win" | "game-over" | null;
 
 // ── TimerBar ──────────────────────────────────────────────────────────────────
@@ -35,7 +33,6 @@ function TimerBar({
 }) {
   const pct = Math.max(0, (timeLeft / totalTime) * 100);
   const isWarning = pct < 30;
-
   return (
     <div className="w-full space-y-2">
       <p className="text-center font-bold text-gray-700 text-xl">
@@ -72,59 +69,50 @@ export default function GamePage() {
     currentStage,
     settings,
     advanceStage,
-    setStage,
     setSettings,
+    resetGame,
   } = useGameStore();
   const variant = useLayoutVariant();
 
   const [overlay, setOverlay] = useState<OverlayKind>("countdown");
   const [finalTotalMs, setFinalTotalMs] = useState(0);
   const [stage1ElapsedMs, setStage1ElapsedMs] = useState(0);
+  const [countdownKey, setCountdownKey] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
 
-  // Timing refs — synchronous reads inside callbacks, never stale
-  const stageStartMsRef = useRef<number>(0); // Date.now() when current stage started
-  const accumulatedMsRef = useRef<number>(0); // running sum of completed-stage durations
-  const totalMsRef = useRef<number>(0); // final value used by WinModal + leaderboard
-  const currentStageRef = useRef<StageNumber>(1);
+  // Accumulator refs — safe to read/write in callbacks and effects
+  const accumulatedMsRef = useRef<number>(0);
+  const totalMsRef = useRef<number>(0);
 
-  // ── Side-effects ────────────────────────────────────────────────────────────
+  // ── Side-effects ──────────────────────────────────────────────────────────
 
-  // Redirect unauthenticated visitors back to home
   useEffect(() => {
     if (!player.name) router.replace("/");
   }, [player.name, router]);
 
-  // Keep audio manager in sync with user preference
   useEffect(() => {
     audioManager.setEnabled(settings.soundEnabled);
   }, [settings.soundEnabled]);
 
-  // Sync currentStage ref
-  useEffect(() => {
-    currentStageRef.current = currentStage;
-  }, [currentStage]);
-
-  // ── Game-event handlers ─────────────────────────────────────────────────────
+  // ── Game-event handlers ───────────────────────────────────────────────────
 
   const handleWin = useCallback(
-    ({ stage }: { stage: StageNumber; timeLeft: number }) => {
-      const elapsedMs = Date.now() - stageStartMsRef.current;
+    ({ elapsedMs }: { elapsedMs: number }) => {
       accumulatedMsRef.current += elapsedMs;
 
-      if (stage === 1) {
-        // Record stage-1 split, advance to stage 2, then show the countdown before stage 2 starts
+      if (currentStage === 1) {
         setStage1ElapsedMs(elapsedMs);
         advanceStage();
+        setCountdownKey((k) => k + 1);
         setOverlay("countdown");
       } else {
-        // Stage 2 complete — surface win screen
         const total = accumulatedMsRef.current;
         totalMsRef.current = total;
         setFinalTotalMs(total);
         setOverlay("win");
       }
     },
-    [advanceStage],
+    [currentStage, advanceStage],
   );
 
   const handleGameOver = useCallback(() => setOverlay("game-over"), []);
@@ -139,52 +127,51 @@ export default function GamePage() {
     handleCardFlip,
   } = useGameLogic({ onWin: handleWin, onGameOver: handleGameOver });
 
-  const { addScore, isTopScore } = useLeaderboard();
+  const { addScore } = useLeaderboard();
   const stageConfig = STAGE_CONFIG[currentStage];
 
-  // ── Overlay handlers ────────────────────────────────────────────────────────
+  // ── Overlay handlers ──────────────────────────────────────────────────────
 
-  // Called when the 3-2-1 countdown finishes; starts whichever stage is current (1 or 2)
   const handleCountdownComplete = useCallback(() => {
     setOverlay(null);
-    stageStartMsRef.current = Date.now();
-    initializeGame(currentStageRef.current);
-  }, [initializeGame]);
+    initializeGame(currentStage);
+  }, [initializeGame, currentStage]);
 
-  // Reset all accumulated state and restart from stage 1
   const handleRetry = useCallback(() => {
+    resetGame();
     accumulatedMsRef.current = 0;
     totalMsRef.current = 0;
-    setStage(1);
+    setCountdownKey((k) => k + 1);
     setOverlay("countdown");
-  }, [setStage]);
+  }, [resetGame]);
 
-  // Persist score (if a top score) then navigate to leaderboard
   const handleGoLeaderboard = useCallback(async () => {
-    const totalMs = totalMsRef.current;
-    if (isTopScore(totalMs)) {
-      await addScore({
-        playerName: player.name,
-        avatar: player.avatar,
-        time_ms: totalMs,
-        moves,
-        stage: currentStage,
-      });
-    }
+    if (submitting) return;
+    setSubmitting(true);
+    await addScore({
+      playerName: player.name,
+      avatar: player.avatar,
+      time_ms: totalMsRef.current,
+      moves,
+      stage: currentStage,
+    });
+    resetGame();
+    accumulatedMsRef.current = 0;
+    totalMsRef.current = 0;
     router.push("/leaderboard");
-  }, [isTopScore, addScore, player, moves, currentStage, router]);
+  }, [submitting, addScore, player, moves, currentStage, resetGame, router]);
 
   const handleSoundToggle = () =>
     setSettings({ soundEnabled: !settings.soundEnabled });
 
-  // ── Overlay renderer ────────────────────────────────────────────────────────
+  // ── Overlay renderer ──────────────────────────────────────────────────────
 
   const renderOverlay = () => {
     switch (overlay) {
       case "countdown":
         return (
           <StageCountdown
-            key={`countdown-${currentStage}`}
+            key={countdownKey}
             stage={currentStage}
             onComplete={handleCountdownComplete}
           />
@@ -196,6 +183,7 @@ export default function GamePage() {
             stage2TimeMs={finalTotalMs - stage1ElapsedMs}
             totalTimeMs={finalTotalMs}
             onLeaderboard={handleGoLeaderboard}
+            submitting={submitting}
           />
         );
       case "game-over":
@@ -211,9 +199,8 @@ export default function GamePage() {
     }
   };
 
-  // ── Render ──────────────────────────────────────────────────────────────────
+  // ── Render ────────────────────────────────────────────────────────────────
 
-  // Signage layout — portrait 1080×1920
   if (variant === "signage") {
     return (
       <div className="min-h-screen bg-white flex flex-col">
@@ -253,7 +240,6 @@ export default function GamePage() {
     );
   }
 
-  // Default layout — desktop / mobile
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header

@@ -1,6 +1,3 @@
-// ============================================================
-// src/hooks/useGameLogic.ts
-// ============================================================
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Card, StageNumber } from "@/types/game";
 import { useGameStore } from "@/store/gameStore";
@@ -14,7 +11,7 @@ import {
 import { CARD_IMAGES } from "@/constants/gameImages";
 
 interface UseGameLogicOptions {
-  onWin: (payload: { stage: StageNumber; timeLeft: number }) => void;
+  onWin: (payload: { elapsedMs: number }) => void;
   onGameOver: () => void;
 }
 
@@ -27,13 +24,14 @@ export function useGameLogic({ onWin, onGameOver }: UseGameLogicOptions) {
   const [moves, setMoves] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const pendingWinRef = useRef(false);
 
-  // Always-fresh refs — safe to read inside effects and callbacks
   const onWinRef = useRef(onWin);
   const onGameOverRef = useRef(onGameOver);
-  const stageRef = useRef(currentStage);
   const timeLeftRef = useRef(timeLeft);
   const totalCardsRef = useRef(0);
+  const onWinSnapshotRef = useRef(onWin);
+  const stageStartMsRef = useRef<number>(0); 
 
   useEffect(() => {
     onWinRef.current = onWin;
@@ -41,9 +39,7 @@ export function useGameLogic({ onWin, onGameOver }: UseGameLogicOptions) {
   useEffect(() => {
     onGameOverRef.current = onGameOver;
   });
-  useEffect(() => {
-    stageRef.current = currentStage;
-  }, [currentStage]);
+
   useEffect(() => {
     timeLeftRef.current = timeLeft;
   }, [timeLeft]);
@@ -65,6 +61,7 @@ export function useGameLogic({ onWin, onGameOver }: UseGameLogicOptions) {
       setMatchedCards([]);
       setMoves(0);
       setTimeLeft(config.durationSeconds);
+      stageStartMsRef.current = Date.now();
       setIsPlaying(true);
     },
     [currentStage],
@@ -78,7 +75,6 @@ export function useGameLogic({ onWin, onGameOver }: UseGameLogicOptions) {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          // Use functional update — no extra setState call in effect body
           setIsPlaying(false);
           onGameOverRef.current();
           return 0;
@@ -88,6 +84,17 @@ export function useGameLogic({ onWin, onGameOver }: UseGameLogicOptions) {
     }, 1000);
     return () => clearInterval(timer);
   }, [isPlaying]);
+
+  // ------ Win detection — runs AFTER render, safe to call setState --------
+
+  useEffect(() => {
+    if (!pendingWinRef.current) return;
+    pendingWinRef.current = false;
+    setIsPlaying(false);
+    if (settings.soundEnabled) setTimeout(() => audioManager.play("win"), 500);
+    onWinSnapshotRef.current({ elapsedMs: timeLeftRef.current });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [matchedCards]);
 
   // ------ Card flip -----------------------------------------
 
@@ -111,27 +118,16 @@ export function useGameLogic({ onWin, onGameOver }: UseGameLogicOptions) {
           if (settings.soundEnabled)
             setTimeout(() => audioManager.play("match"), 300);
 
-          setMatchedCards((prev) => {
-            const next = [...prev, newFlipped[0], newFlipped[1]];
-
-            // Check win inside the updater — no cascading setState in effect
-            if (next.length === totalCardsRef.current) {
-              setIsPlaying(false);
-              if (settings.soundEnabled)
-                setTimeout(() => audioManager.play("win"), 500);
-              // Defer callback so React finishes this render first
-              setTimeout(() => {
-                onWinRef.current({
-                  stage: stageRef.current,
-                  timeLeft: timeLeftRef.current,
-                });
-              }, 0);
-            }
-
-            return next;
-          });
-
+          const next = [...matchedCards, newFlipped[0], newFlipped[1]];
+          setMatchedCards(next);
           setFlippedCards([]);
+
+          // Capture timeLeft NOW — before any re-render can change it
+          if (next.length === totalCardsRef.current) {
+            timeLeftRef.current = Date.now() - stageStartMsRef.current; // real elapsed ms
+            onWinSnapshotRef.current = onWin;
+            pendingWinRef.current = true;
+          }
         } else {
           if (settings.soundEnabled)
             setTimeout(() => audioManager.play("wrong"), 300);
@@ -139,7 +135,14 @@ export function useGameLogic({ onWin, onGameOver }: UseGameLogicOptions) {
         }
       }
     },
-    [isPlaying, flippedCards, matchedCards, cards, settings.soundEnabled],
+    [
+      isPlaying,
+      flippedCards,
+      matchedCards,
+      cards,
+      settings.soundEnabled,
+      onWin,
+    ],
   );
 
   // ------ Hint ----------------------------------------------

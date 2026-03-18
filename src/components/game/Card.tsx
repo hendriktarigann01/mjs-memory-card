@@ -61,7 +61,7 @@ export function Card({
           style={{ backfaceVisibility: "hidden" }}
         >
           <Image
-            src="/mjs_logo.png"
+            src="/mjs_logo_text.png"
             width={80}
             height={80}
             alt="MJ Solution Indonesia"
