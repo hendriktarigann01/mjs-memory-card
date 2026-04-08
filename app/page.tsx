@@ -91,6 +91,7 @@ function NameInput({
         "focus:outline-none",
         "shadow-[0_4px_0_0_#3AAFA9]",
         "transition-all",
+         "placeholder:!text-[#3BBFB0]/30",
         inputClassName,
       )}
       onKeyDown={(e) => e.key === "Enter" && value.trim() && onEnter()}
