@@ -9,6 +9,7 @@ export const STAGE_CONFIG: Record<StageNumber, StageConfig> = {
   1: {
     stage: 1,
     label: "Stage 1",
+    // durationSeconds: 60,
     durationSeconds: 60,
     pairs: 6,
     cols: 4,
@@ -17,6 +18,7 @@ export const STAGE_CONFIG: Record<StageNumber, StageConfig> = {
   2: {
     stage: 2,
     label: "Stage 2",
+    // durationSeconds: 45,
     durationSeconds: 45,
     pairs: 6,
     cols: 4,

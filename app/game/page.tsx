@@ -4,7 +4,6 @@ export const dynamic = "force-dynamic";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Home } from "lucide-react";
 import { useGameStore } from "@/store/gameStore";
 import { useGameLogic } from "@/hooks/useGameLogic";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
@@ -34,22 +33,22 @@ function TimerBar({
   const pct = Math.max(0, (timeLeft / totalTime) * 100);
   const isWarning = pct < 30;
   return (
-    <div className="w-full space-y-2">
-      <p className="text-center font-bold text-gray-700 text-xl">
+    <div className="w-full space-y-2 mt-5">
+      <p className="text-center font-light text-brand-primary text-xl uppercase tracking-widest">
         Time Left:&nbsp;
         <span
           className={cn(
-            "font-black",
-            isWarning ? "text-red-500" : "text-gray-900",
+            "font-light",
+            isWarning ? "text-red-400" : "text-brand-primary",
           )}
         >
           {formatTime(timeLeft)}
         </span>
       </p>
-      <div className="w-full h-3 rounded-full bg-gray-200 overflow-hidden">
+      <div className="w-full h-5 bg-[#002965] overflow-hidden rounded-full">
         <motion.div
           className={cn(
-            "h-full rounded-full",
+            "h-full",
             isWarning ? "bg-red-400" : "bg-brand-primary",
           )}
           animate={{ width: `${pct}%` }}
@@ -80,7 +79,6 @@ export default function GamePage() {
   const [countdownKey, setCountdownKey] = useState(0);
   const [submitting, setSubmitting] = useState(false);
 
-  // Accumulator refs — safe to read/write in callbacks and effects
   const accumulatedMsRef = useRef<number>(0);
   const totalMsRef = useRef<number>(0);
 
@@ -199,83 +197,87 @@ export default function GamePage() {
     }
   };
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  // ── Shared wrapper ────────────────────────────────────────────────────────
 
-  if (variant === "signage") {
-    return (
-      <div className="min-h-screen bg-white flex flex-col">
-        <Header
-          showSoundToggle
-          soundEnabled={settings.soundEnabled}
-          onSoundToggle={handleSoundToggle}
-        />
-        <main className="flex-1 flex flex-col items-center justify-center px-16 py-4 gap-6">
-          <div className="text-center">
-            <h1 className="text-5xl font-black text-brand-primary tracking-wider uppercase">
-              Memory Games
-            </h1>
-            <h2 className="text-2xl font-bold text-gray-600 mt-1 uppercase tracking-widest">
-              {stageConfig.label}
-            </h2>
-          </div>
-          <div className="w-full max-w-2xl">
-            <GameBoard
-              cards={cards}
-              flippedCards={flippedCards}
-              matchedCards={matchedCards}
-              onCardClick={handleCardFlip}
-              variant="signage"
-            />
-          </div>
-          <div className="w-full max-w-2xl">
-            <TimerBar
-              timeLeft={timeLeft}
-              totalTime={stageConfig.durationSeconds}
-            />
-          </div>
-        </main>
-        <Footer />
-        {renderOverlay()}
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-white flex flex-col">
+  const pageWrapper = (children: React.ReactNode) => (
+    <div className="min-h-screen bg-brand-primary-dark flex flex-col relative overflow-hidden">
+      <div
+        className="absolute inset-0 h-full w-full 
+                  bg-[linear-gradient(to_right,#002965_1px,transparent_1px),linear-gradient(to_bottom,#002965_1px,transparent_1px)] 
+                  bg-[size:45px_45px]"
+      />
       <Header
         showSoundToggle
         soundEnabled={settings.soundEnabled}
         onSoundToggle={handleSoundToggle}
       />
-      <main className="flex-1 flex flex-col items-center justify-center px-10 py-6 gap-6">
-        <div className="text-center">
-          <h1 className="text-4xl font-black text-brand-primary tracking-wider uppercase">
-            Memory Games
-          </h1>
-          <h2 className="text-lg font-bold text-gray-600 mt-1 uppercase tracking-widest">
-            {stageConfig.label}
-          </h2>
-        </div>
-        <div className="flex items-center gap-12 w-full max-w-4xl">
-          <div className="flex-1">
-            <GameBoard
-              cards={cards}
-              flippedCards={flippedCards}
-              matchedCards={matchedCards}
-              onCardClick={handleCardFlip}
-              variant="default"
-            />
-          </div>
-          <div className="w-56 shrink-0">
-            <TimerBar
-              timeLeft={timeLeft}
-              totalTime={stageConfig.durationSeconds}
-            />
-          </div>
-        </div>
-      </main>
+      {children}
       <Footer />
       {renderOverlay()}
     </div>
+  );
+
+  // ── Digital Signage Layout ────────────────────────────────────────────────
+
+  if (variant === "signage") {
+    return pageWrapper(
+      <main className="flex-1 flex flex-col items-center justify-center px-16 py-4 gap-6 relative z-10">
+        <div className="text-center">
+          <h1 className="text-5xl font-light text-brand-primary tracking-wider uppercase">
+            Memory Games
+          </h1>
+          <h2 className="text-xl font-light text-brand-primary mt-1 uppercase tracking-widest opacity-70">
+            {stageConfig.label}
+          </h2>
+        </div>
+        <div className="w-full max-w-2xl">
+          <GameBoard
+            cards={cards}
+            flippedCards={flippedCards}
+            matchedCards={matchedCards}
+            onCardClick={handleCardFlip}
+            variant="signage"
+          />
+        </div>
+        <div className="w-full max-w-2xl">
+          <TimerBar
+            timeLeft={timeLeft}
+            totalTime={stageConfig.durationSeconds}
+          />
+        </div>
+      </main>,
+    );
+  }
+
+  // ── Default / Mobile Layout ───────────────────────────────────────────────
+
+  return pageWrapper(
+    <main className="flex-1 flex flex-col items-center justify-center px-10 py-6 gap-6 relative z-10">
+      <div className="text-center">
+        <h1 className="text-4xl font-light text-brand-primary tracking-wider uppercase">
+          Memory Games
+        </h1>
+        <h2 className="text-lg font-light text-brand-primary mt-1 uppercase tracking-widest opacity-70">
+          {stageConfig.label}
+        </h2>
+      </div>
+      <div className="flex items-center gap-12 w-full max-w-4xl">
+        <div className="flex-1">
+          <GameBoard
+            cards={cards}
+            flippedCards={flippedCards}
+            matchedCards={matchedCards}
+            onCardClick={handleCardFlip}
+            variant="default"
+          />
+        </div>
+        <div className="w-56 shrink-0">
+          <TimerBar
+            timeLeft={timeLeft}
+            totalTime={stageConfig.durationSeconds}
+          />
+        </div>
+      </div>
+    </main>,
   );
 }

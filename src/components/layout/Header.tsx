@@ -19,20 +19,32 @@ export function Header({
   return (
     <header
       className={cn(
-        "flex items-center justify-between px-6 pt-6 md:px-10 md:pt-8",
+        "flex items-center z-20 justify-between px-6 pt-6 md:px-10 md:pt-8",
         className,
       )}
     >
-      <Link href="/" aria-label="Home">
-        <Image
-          src="/mjs_logo_text.png"
-          width={120}
-          height={48}
-          alt="MJ Solution Indonesia"
-          className="h-10 w-auto md:h-14"
-          priority
-        />
-      </Link>
+      <div className="flex gap-5">
+        <Link href="/" aria-label="Home">
+          <Image
+            src="/mjs_logo_text.png"
+            width={120}
+            height={48}
+            alt="MJ Solution Indonesia"
+            className="h-10 w-auto md:h-14"
+            priority
+          />
+        </Link>
+        <Link href="/" aria-label="Home">
+          <Image
+            src="/arch_id.png"
+            width={120}
+            height={48}
+            alt="Arch ID"
+            className="h-10 w-auto md:h-14"
+            priority
+          />
+        </Link>
+      </div>
 
       {/* Sound toggle (optional) */}
       {showSoundToggle && onSoundToggle && (

@@ -20,8 +20,8 @@ const BADGE_BG = {
 } as const;
 const TEXT_COLOR = {
   1: "text-[#2563EB]",
-  2: "text-[#EAB308]",
-  3: "text-[#15803D]",
+  2: "text-[#5BA4F5]",
+  3: "text-[#5BA4F5]",
 } as const;
 
 interface PodiumPlayerProps {
@@ -30,7 +30,7 @@ interface PodiumPlayerProps {
 }
 
 export function PodiumPlayer({ entry, rank }: PodiumPlayerProps) {
-  const podiumBg = rank === 1 ? "bg-brand-primary" : "bg-brand-primary-light";
+  const podiumBg = rank === 1 ? "bg-brand-primary" : "bg-[#25569E]";
   const statsColor = rank === 1 ? "text-white" : TEXT_COLOR[rank];
   const dimension = rank === 1 ? "w-16 h-16" : "w-12 h-12";
 

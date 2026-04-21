@@ -18,9 +18,9 @@ const TREND_BY_RANK: Record<number, RankTrend> = {
 
 const TREND_ICON = { up: "▲", down: "▼", neutral: "--" } as const;
 const TREND_COLOR = {
-  up: "text-green-500",
-  down: "text-red-500",
-  neutral: "text-gray-400",
+  up: "text-brand-primary",
+  down: "text-brand-primary",
+  neutral: "text-brand-primary",
 } as const;
 
 interface RankRowProps {
@@ -32,7 +32,7 @@ export function RankRow({ entry, rank }: RankRowProps) {
   const trend = TREND_BY_RANK[rank] ?? "neutral";
 
   return (
-    <div className="flex items-center gap-3 bg-brand-primary-light rounded-2xl px-4 py-3">
+    <div className="flex items-center gap-3 bg-brand-primary-dark border border-brand-primary rounded-2xl px-4 py-3">
       {/* Avatar */}
       <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
         <Image
@@ -45,7 +45,7 @@ export function RankRow({ entry, rank }: RankRowProps) {
 
       {/* Name + time */}
       <div className="flex-1 min-w-0">
-        <p className="font-bold text-[#1A4A46] text-sm uppercase tracking-wide truncate">
+        <p className="font-bold text-brand-primary text-sm uppercase tracking-wide truncate">
           {entry.player_name}
         </p>
         <p className="text-xs text-brand-primary font-medium font-mono">
@@ -54,7 +54,7 @@ export function RankRow({ entry, rank }: RankRowProps) {
       </div>
 
       {/* Rank badge */}
-      <div className="w-8 h-8 rounded-full bg-[#C8EDE9] flex items-center justify-center font-black text-[#1A4A46] text-sm flex-shrink-0">
+      <div className="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center font-black text-[#25569E] text-sm flex-shrink-0">
         {rank}
       </div>
 

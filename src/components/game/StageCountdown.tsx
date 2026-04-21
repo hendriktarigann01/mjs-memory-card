@@ -38,29 +38,31 @@ export function StageCountdown({ stage, onComplete }: StageCountdownProps) {
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 260, damping: 22 }}
-        className="bg-white rounded-3xl border-2 border-brand-primary shadow-2xl w-full max-w-lg px-12 py-16 text-center space-y-10"
+        className="relative bg-[#0D1F3C] border-2 border-brand-primary w-full max-w-lg aspect-[16/9] flex flex-col items-center justify-center overflow-hidden"
       >
-        {/* Stage label */}
-        <h2 className="text-4xl font-black text-brand-primary uppercase tracking-wider">
-          Stage {stage}
-        </h2>
+        <div className="absolute inset-3 border-2 border-dashed border-brand-primary/60 pointer-events-none" />
 
-        {/* Countdown number */}
-        <div className="flex items-center justify-center">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={count}
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 1.4, opacity: 0 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              className="w-24 h-24 rounded-full bg-brand-primary flex items-center justify-center shadow-lg"
-            >
-              <span className="text-4xl font-black text-white">
-                {count > 0 ? count : ""}
-              </span>
-            </motion.div>
-          </AnimatePresence>
+        {/* Konten Stage */}
+        <div className="relative z-10 flex flex-col items-center gap-8">
+          <h2 className="text-4xl font-mono text-brand-primary uppercase tracking-[0.3em]">
+            Stage {stage}
+          </h2>
+
+          {/* Countdown Circle */}
+          <div className="relative flex items-center justify-center">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={count}
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 1.4, opacity: 0 }}
+                transition={{ duration: 0.35 }}
+                className="w-20 h-20 rounded-full bg-brand-primary flex items-center justify-center shadow-[0_0_15px_rgba(var(--brand-primary-rgb),0.4)]"
+              >
+                <span className="text-3xl font-bold text-white">{count}</span>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </motion.div>
     </div>

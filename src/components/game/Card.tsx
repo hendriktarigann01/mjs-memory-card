@@ -21,18 +21,12 @@ export function Card({
   onClick,
   size = "default",
 }: CardProps) {
-  const sizeClasses = {
-    default: "w-full aspect-[1/1]",
-    signage: "w-full aspect-[1/1]",
-  };
-
   return (
     <motion.div
       layoutId={id}
       onClick={onClick}
       className={cn(
-        sizeClasses[size],
-        "relative cursor-pointer select-none",
+        "relative w-full aspect-square cursor-pointer select-none",
         isMatched && "cursor-default",
       )}
       whileHover={!isFlipped && !isMatched ? { scale: 1.04 } : {}}
@@ -51,50 +45,53 @@ export function Card({
         }}
         style={{ transformStyle: "preserve-3d", position: "relative" }}
       >
-        {/* ── Card Back ──────────────────────────────────────── */}
+        {/* ── Card Back ─────────────────────────────────────── */}
         <div
-          className={cn(
-            "absolute inset-0 rounded-2xl",
-            "bg-brand-primary-light",
-            "flex items-center justify-center",
-          )}
+          className="relative w-full h-full bg-transparent border-[3px] border-brand-primary flex items-center justify-center p-4"
           style={{ backfaceVisibility: "hidden" }}
         >
-          <Image
-            src="/mjs_logo_text.png"
-            width={80}
-            height={80}
-            alt="MJ Solution Indonesia"
-            className="w-3/5 h-auto opacity-60"
-            priority
+          {/* Grid overlay */}
+          <div
+            className="absolute inset-0 opacity-20 pointer-events-none"
+            style={{
+              backgroundImage: `
+                linear-gradient(to right, var(--brand-primary) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--brand-primary) 1px, transparent 1px)
+              `,
+              backgroundSize: "40px 40px",
+            }}
           />
+
+          {/* Inner dashed border */}
+          <div className="absolute inset-3 border border-dashed border-brand-primary pointer-events-none" />
+
+          {/* Back text */}
+          <div className="relative z-10 font-mono text-brand-primary text-xs uppercase tracking-widest leading-relaxed text-center whitespace-pre-line">
+            {`Arch:id\nX\nMJ Solution\nIndonesia`}
+          </div>
         </div>
 
-        {/* ── Card Front ─────────────────────────────────────── */}
+        {/* ── Card Front ────────────────────────────────────── */}
         <div
           className={cn(
-            "absolute inset-0 rounded-2xl overflow-hidden",
-            "flex items-center justify-center",
+            "absolute inset-0 overflow-hidden flex items-center justify-center",
             isMatched
-              ? "bg-[#C8EDE9] border-2 border-brand-primary"
+              ? "bg-brand-primary border-2 border-brand-primary"
               : "bg-white border",
           )}
-          style={{
-            backfaceVisibility: "hidden",
-            transform: "rotateY(180deg)",
-          }}
+          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
           <Image
             src={getCardImageSrc(imageId)}
             alt={imageId}
             fill
-            className="object-contain p-3"
+            className="object-contain"
           />
 
           {/* Matched shimmer overlay */}
           {isMatched && (
             <motion.div
-              className="absolute inset-0 rounded-2xl bg-brand-primary/20"
+              className="absolute inset-0"
               animate={{ opacity: [0.2, 0.5, 0.2] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             />

@@ -35,12 +35,6 @@ export type CardImageId =
   | "product-4"
   | "product-5"
   | "product-6"
-  | "product-7"
-  | "product-8"
-  | "product-9"
-  | "product-10"
-  | "product-11"
-  | "product-12";
 
 export interface Card {
   id: string;
