@@ -48,7 +48,7 @@ export function Modal({
                 <button
                   onClick={onClose}
                   aria-label="Close"
-                  className="absolute top-4 right-4 p-2 rounded-full hover:bg-[#E0F5F2] text-gray-400 hover:text-[#3BBFB0] transition-colors"
+                  className="absolute top-4 right-4 p-2 rounded-full hover:bg-brand-primary-light text-gray-400 hover:text-brand-primary transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -56,7 +56,7 @@ export function Modal({
 
               {/* Title */}
               {title && (
-                <h2 className="text-xl font-black text-[#3BBFB0] uppercase tracking-wider mb-4 pr-8">
+                <h2 className="text-xl font-black text-brand-primary uppercase tracking-wider mb-4 pr-8">
                   {title}
                 </h2>
               )}

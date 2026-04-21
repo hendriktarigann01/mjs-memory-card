@@ -50,7 +50,7 @@ function TimerBar({
         <motion.div
           className={cn(
             "h-full rounded-full",
-            isWarning ? "bg-red-400" : "bg-[#3BBFB0]",
+            isWarning ? "bg-red-400" : "bg-brand-primary",
           )}
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.5 }}
@@ -211,7 +211,7 @@ export default function GamePage() {
         />
         <main className="flex-1 flex flex-col items-center justify-center px-16 py-4 gap-6">
           <div className="text-center">
-            <h1 className="text-5xl font-black text-[#3BBFB0] tracking-wider uppercase">
+            <h1 className="text-5xl font-black text-brand-primary tracking-wider uppercase">
               Memory Games
             </h1>
             <h2 className="text-2xl font-bold text-gray-600 mt-1 uppercase tracking-widest">
@@ -249,7 +249,7 @@ export default function GamePage() {
       />
       <main className="flex-1 flex flex-col items-center justify-center px-10 py-6 gap-6">
         <div className="text-center">
-          <h1 className="text-4xl font-black text-[#3BBFB0] tracking-wider uppercase">
+          <h1 className="text-4xl font-black text-brand-primary tracking-wider uppercase">
             Memory Games
           </h1>
           <h2 className="text-lg font-bold text-gray-600 mt-1 uppercase tracking-widest">
@@ -273,13 +273,6 @@ export default function GamePage() {
             />
           </div>
         </div>
-        <button
-          onClick={() => router.push("/")}
-          className="flex items-center gap-2 text-gray-400 hover:text-gray-600 transition-colors font-semibold text-sm"
-        >
-          <Home className="w-4 h-4" />
-          Back to Menu
-        </button>
       </main>
       <Footer />
       {renderOverlay()}

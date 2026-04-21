@@ -1,6 +1,6 @@
 "use client";
 export const dynamic = "force-dynamic";
- 
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -82,19 +82,19 @@ export default function LeaderboardPage() {
         <Header />
         <main className="flex-1 flex flex-col justify-center items-center px-16 py-6 gap-8">
           <div className="flex items-center">
-            <div className="flex gap-2 border-[3px] border-[#3BBFB0] rounded-full px-16 py-4 shadow-[0_4px_0_0_#3BBFB0]">
+            <div className="flex gap-2 border-[3px] border-brand-primary rounded-full px-16 py-4 shadow-[0_4px_0_0_#3BBFB0]">
               <Link
                 href="/"
-                className="p-2 rounded-full hover:bg-[#E0F5F2] text-[#3BBFB0] transition-colors"
+                className="p-2 rounded-full hover:bg-brand-primary-light text-brand-primary transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
               </Link>
-              <h1 className="text-4xl font-black text-[#3BBFB0] tracking-widest uppercase">
+              <h1 className="text-4xl font-black text-brand-primary tracking-widest uppercase">
                 Leaderboard
               </h1>
               <button
                 onClick={refetch}
-                className="p-2 rounded-full hover:bg-[#E0F5F2] text-[#3BBFB0] transition-colors"
+                className="p-2 rounded-full hover:bg-brand-primary-light text-brand-primary transition-colors"
               >
                 <RefreshCw className="w-5 h-5" />
               </button>
@@ -106,7 +106,7 @@ export default function LeaderboardPage() {
               animate={{ opacity: 1, y: 0 }}
             >
               {loading ? (
-                <div className="flex items-center justify-center py-16 text-[#3BBFB0] font-semibold">
+                <div className="flex items-center justify-center py-16 text-brand-primary font-semibold">
                   Loading leaderboard…
                 </div>
               ) : (
@@ -126,14 +126,14 @@ export default function LeaderboardPage() {
       <Header />
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-6 gap-6 max-w-lg mx-auto w-full">
         <div className="flex items-center gap-3">
-          <div className="border-2 border-[#3BBFB0] rounded-full px-10 py-3">
-            <h1 className="text-2xl font-black text-[#3BBFB0] tracking-widest uppercase">
+          <div className="border-2 border-brand-primary rounded-full px-10 py-3">
+            <h1 className="text-2xl font-black text-brand-primary tracking-widest uppercase">
               Leaderboard
             </h1>
           </div>
           <button
             onClick={refetch}
-            className="p-2 rounded-full hover:bg-[#E0F5F2] text-[#3BBFB0] transition-colors"
+            className="p-2 rounded-full hover:bg-brand-primary-light text-brand-primary transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
@@ -144,7 +144,7 @@ export default function LeaderboardPage() {
           className="w-full"
         >
           {loading ? (
-            <div className="flex items-center justify-center py-16 text-[#3BBFB0] font-semibold">
+            <div className="flex items-center justify-center py-16 text-brand-primary font-semibold">
               Loading leaderboard…
             </div>
           ) : (
@@ -153,7 +153,7 @@ export default function LeaderboardPage() {
         </motion.div>
         <button
           onClick={handlePlayAgain}
-          className="px-14 py-4 rounded-full bg-[#3BBFB0] text-white font-black uppercase tracking-widest text-lg shadow-md hover:bg-[#2A9D8F] transition-colors"
+          className="px-14 py-4 rounded-full bg-brand-primary text-white font-black uppercase tracking-widest text-lg shadow-md hover:bg-brand-primary transition-colors"
         >
           Play Again
         </button>

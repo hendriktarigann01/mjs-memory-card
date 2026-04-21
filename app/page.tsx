@@ -1,6 +1,6 @@
 "use client";
 export const dynamic = "force-dynamic";
- 
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -46,7 +46,7 @@ function AvatarGrid({ selected, onSelect, size = "sm" }: AvatarGridProps) {
             "flex items-center justify-center rounded-full overflow-hidden border-4 transition-all duration-200 relative",
             dimension,
             selected === id
-              ? "border-[#3BBFB0] ring-2 ring-[#3BBFB0]/40"
+              ? "border-brand-primary ring-2 ring-brand-primary/40"
               : "border-transparent opacity-60 hover:opacity-90",
           )}
         >
@@ -85,13 +85,13 @@ function NameInput({
       maxLength={20}
       placeholder="Your name here"
       className={cn(
-        "w-full rounded-full text-center font-bold text-[#3BBFB0]",
+        "w-full rounded-full text-center font-bold text-brand-primary",
         "border-[3px] border-brand-primary bg-brand-primary-light",
         "px-6 py-4 text-base",
         "focus:outline-none",
         "shadow-[0_4px_0_0_#3AAFA9]",
         "transition-all",
-         "placeholder:!text-[#3BBFB0]/30",
+        "placeholder:!text-brand-primary/30",
         inputClassName,
       )}
       onKeyDown={(e) => e.key === "Enter" && value.trim() && onEnter()}
@@ -139,7 +139,7 @@ export default function HomePage() {
         <main className="flex-1 flex flex-col items-center justify-center px-16 gap-18 relative">
           {/* Title */}
           <div className="text-center">
-            <h1 className="text-6xl font-black text-[#3BBFB0] tracking-wider uppercase">
+            <h1 className="text-6xl font-black text-brand-primary tracking-wider uppercase">
               Memory Games
             </h1>
             <p className="text-xl font-bold text-gray-600 mt-3 uppercase tracking-widest">
@@ -150,7 +150,7 @@ export default function HomePage() {
           {/* Name + Avatar side by side */}
           <div className="flex items-start gap-24">
             <div className="flex flex-col items-center gap-4">
-              <label className="text-lg font-bold text-[#3BBFB0] uppercase tracking-widest">
+              <label className="text-lg font-bold text-brand-primary uppercase tracking-widest">
                 Enter Your Name
               </label>
               <NameInput
@@ -162,7 +162,7 @@ export default function HomePage() {
             </div>
 
             <div className="flex flex-col items-center gap-4">
-              <label className="text-lg font-bold text-[#3BBFB0] uppercase tracking-widest">
+              <label className="text-lg font-bold text-brand-primary uppercase tracking-widest">
                 Select Your Avatar
               </label>
               <AvatarGrid
@@ -182,7 +182,7 @@ export default function HomePage() {
               whileTap={canPlay ? { scale: 0.96 } : {}}
               className={cn(
                 "px-14 py-4 rounded-full font-black text-xl uppercase tracking-widest",
-                "bg-[#3BBFB0] text-white shadow-lg transition-all",
+                "bg-brand-primary text-white shadow-lg transition-all",
                 !canPlay && "opacity-40 cursor-not-allowed",
               )}
             >
@@ -197,7 +197,7 @@ export default function HomePage() {
               onClick={handleViewLeaderboard}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
-              className="flex items-center gap-3 px-14 py-4 rounded-full font-black text-xl uppercase tracking-widest bg-[#2A9D8F] text-white shadow-lg"
+              className="flex items-center gap-3 px-14 py-4 rounded-full font-black text-xl uppercase tracking-widest bg-brand-primary text-white shadow-lg"
             >
               <Trophy className="w-6 h-6" />
               View Leaderboard
@@ -218,7 +218,7 @@ export default function HomePage() {
       <main className="flex-1 flex flex-col items-center justify-center px-6 gap-15 py-8">
         {/* Title */}
         <div className="text-center">
-          <h1 className="text-4xl font-black text-[#3BBFB0] tracking-wider uppercase">
+          <h1 className="text-4xl font-black text-brand-primary tracking-wider uppercase">
             Memory Games
           </h1>
           <p className="text-sm font-bold text-gray-600 mt-2 uppercase tracking-widest">
@@ -228,7 +228,7 @@ export default function HomePage() {
 
         {/* Name input */}
         <div className="flex flex-col items-center gap-2 w-full max-w-xs">
-          <label className="text-sm font-bold text-[#3BBFB0] uppercase tracking-widest">
+          <label className="text-sm font-bold text-brand-primary uppercase tracking-widest">
             Enter Your Name
           </label>
           <NameInput
@@ -241,7 +241,7 @@ export default function HomePage() {
 
         {/* Avatar selector */}
         <div className="flex flex-col items-center gap-2">
-          <label className="text-sm font-bold text-[#3BBFB0] uppercase tracking-widest">
+          <label className="text-sm font-bold text-brand-primary uppercase tracking-widest">
             Select Your Avatar
           </label>
           <AvatarGrid selected={selectedAvatar} onSelect={setSelectedAvatar} />

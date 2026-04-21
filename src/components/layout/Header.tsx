@@ -23,7 +23,6 @@ export function Header({
         className,
       )}
     >
-      {/* Logo — links back to home */}
       <Link href="/" aria-label="Home">
         <Image
           src="/mjs_logo_text.png"
@@ -40,7 +39,7 @@ export function Header({
         <button
           onClick={onSoundToggle}
           aria-label={soundEnabled ? "Mute sound" : "Enable sound"}
-          className="p-2 rounded-full hover:bg-[#E0F5F2] text-[#3BBFB0] transition-colors"
+          className="p-2 rounded-full hover:bg-brand-primary-light text-brand-primary transition-colors"
         >
           {soundEnabled ? (
             <Volume2 className="w-5 h-5" />

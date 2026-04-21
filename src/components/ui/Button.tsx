@@ -25,20 +25,20 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           "inline-flex items-center justify-center rounded-full font-bold",
           "uppercase tracking-wider transition-all duration-200",
           "disabled:opacity-40 disabled:cursor-not-allowed",
-          "active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3BBFB0]/50",
+          "active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/50",
 
           // Variants
           variant === "primary" && [
-            "bg-[#3BBFB0] text-white shadow-md",
-            "hover:bg-[#2A9D8F] hover:shadow-lg",
+            "bg-brand-primary text-white shadow-md",
+            "hover:bg-brand-primary hover:shadow-lg",
           ],
           variant === "secondary" && [
-            "bg-[#2A9D8F] text-white shadow-md",
+            "bg-brand-primary text-white shadow-md",
             "hover:bg-[#1E8A7C] hover:shadow-lg",
           ],
           variant === "outline" && [
-            "border-2 border-[#3BBFB0] text-[#3BBFB0] bg-transparent",
-            "hover:bg-[#E0F5F2]",
+            "border-2 border-brand-primary text-brand-primary bg-transparent",
+            "hover:bg-brand-primary-light",
           ],
           variant === "ghost" && [
             "text-gray-500 bg-transparent",

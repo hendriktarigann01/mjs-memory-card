@@ -1,4 +1,3 @@
-
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
@@ -23,9 +22,9 @@ export function GlassCard({
     <div
       className={cn(
         "rounded-2xl",
-        variant === "default" && "bg-white border border-[#A8DDD6] shadow-sm",
-        variant === "teal" && "bg-[#E0F5F2] border border-[#A8DDD6]",
-        variant === "outline" && "bg-transparent border-2 border-[#3BBFB0]",
+        variant === "default" && "bg-white shadow-sm",
+        variant === "teal" && "bg-brand-primary-light",
+        variant === "outline" && "bg-transparent border-2 border-brand-primary",
         className,
       )}
     >

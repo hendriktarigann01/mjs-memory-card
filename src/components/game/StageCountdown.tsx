@@ -38,10 +38,10 @@ export function StageCountdown({ stage, onComplete }: StageCountdownProps) {
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 260, damping: 22 }}
-        className="bg-white rounded-3xl border-2 border-[#3BBFB0] shadow-2xl w-full max-w-lg px-12 py-16 text-center space-y-10"
+        className="bg-white rounded-3xl border-2 border-brand-primary shadow-2xl w-full max-w-lg px-12 py-16 text-center space-y-10"
       >
         {/* Stage label */}
-        <h2 className="text-4xl font-black text-[#3BBFB0] uppercase tracking-wider">
+        <h2 className="text-4xl font-black text-brand-primary uppercase tracking-wider">
           Stage {stage}
         </h2>
 
@@ -54,7 +54,7 @@ export function StageCountdown({ stage, onComplete }: StageCountdownProps) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 1.4, opacity: 0 }}
               transition={{ duration: 0.35, ease: "easeOut" }}
-              className="w-24 h-24 rounded-full bg-[#3BBFB0] flex items-center justify-center shadow-lg"
+              className="w-24 h-24 rounded-full bg-brand-primary flex items-center justify-center shadow-lg"
             >
               <span className="text-4xl font-black text-white">
                 {count > 0 ? count : ""}

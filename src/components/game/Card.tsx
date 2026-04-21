@@ -55,7 +55,7 @@ export function Card({
         <div
           className={cn(
             "absolute inset-0 rounded-2xl",
-            "bg-[#E0F5F2] border border-[#A8DDD6]",
+            "bg-brand-primary-light",
             "flex items-center justify-center",
           )}
           style={{ backfaceVisibility: "hidden" }}
@@ -76,8 +76,8 @@ export function Card({
             "absolute inset-0 rounded-2xl overflow-hidden",
             "flex items-center justify-center",
             isMatched
-              ? "bg-[#C8EDE9] border-2 border-[#3BBFB0]"
-              : "bg-white border border-[#A8DDD6]",
+              ? "bg-[#C8EDE9] border-2 border-brand-primary"
+              : "bg-white border",
           )}
           style={{
             backfaceVisibility: "hidden",
@@ -94,7 +94,7 @@ export function Card({
           {/* Matched shimmer overlay */}
           {isMatched && (
             <motion.div
-              className="absolute inset-0 rounded-2xl bg-[#3BBFB0]/20"
+              className="absolute inset-0 rounded-2xl bg-brand-primary/20"
               animate={{ opacity: [0.2, 0.5, 0.2] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             />
