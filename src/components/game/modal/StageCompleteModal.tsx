@@ -3,22 +3,11 @@ import { StageNumber } from "@/types/game";
 import { formatTime } from "@/lib/utils";
 
 interface StageCompleteModalProps {
-  /** The stage the player just completed */
   completedStage: StageNumber;
-  /** Time remaining on the clock when all pairs were matched */
   timeLeft: number;
   onNextStage: () => void;
 }
 
-/**
- * Shown when the player completes Stage 1 (not the final stage).
- *
- * Design spec:
- *   - Title:  STAGE {n} COMPLETE  (teal)
- *   - Label:  TIME
- *   - Value:  mm:ss pill
- *   - Button: NEXT STAGE
- */
 export function StageCompleteModal({
   completedStage,
   timeLeft,
@@ -27,23 +16,26 @@ export function StageCompleteModal({
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-6">
       <motion.div
-        initial={{ scale: 0.88, opacity: 0, y: 20 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 280, damping: 24 }}
-        className="bg-white rounded-3xl shadow-2xl w-full max-w-sm px-8 py-10 text-center space-y-8"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 260, damping: 22 }}
+        className="relative bg-[#0D1F3C] border-2 border-brand-primary w-full max-w-sm flex flex-col items-center justify-center gap-8 px-8 py-10 overflow-hidden"
       >
+        {/* Inner dashed border */}
+        <div className="absolute inset-3 border-2 border-dashed border-brand-primary/60 pointer-events-none" />
+
         {/* Title */}
-        <h2 className="text-3xl font-black text-brand-primary uppercase tracking-wider leading-tight">
+        <h2 className="relative z-10 font-mono text-3xl text-brand-primary uppercase tracking-[0.3em] text-center leading-tight">
           Stage {completedStage} Complete
         </h2>
 
         {/* Time display */}
-        <div className="space-y-2">
-          <p className="text-sm font-bold text-gray-700 uppercase tracking-widest">
-            Time
+        <div className="relative z-10 flex flex-col items-center gap-2">
+          <p className="font-mono text-xs text-brand-primary/60 uppercase tracking-widest">
+            Time Left
           </p>
-          <div className="mx-auto w-fit px-10 py-3 rounded-full bg-brand-primary-light">
-            <span className="text-2xl font-black text-brand-primary tracking-widest">
+          <div className="px-10 py-3 border border-brand-primary/40 bg-brand-primary/10">
+            <span className="font-mono text-2xl text-brand-primary tracking-widest">
               {formatTime(timeLeft)}
             </span>
           </div>
@@ -52,7 +44,7 @@ export function StageCompleteModal({
         {/* Next stage button */}
         <button
           onClick={onNextStage}
-          className="w-full py-4 rounded-full bg-brand-primary text-white font-black text-base uppercase tracking-widest hover:bg-brand-primary transition-colors shadow-md"
+          className="relative z-10 w-full py-3 border-2 border-brand-primary bg-brand-primary/10 font-mono text-sm text-brand-primary uppercase tracking-widest hover:bg-brand-primary/20 transition-colors"
         >
           Next Stage
         </button>

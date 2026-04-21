@@ -10,9 +10,6 @@ interface WinModalProps {
   submitting?: boolean;
 }
 
-/**
- * Shown when the player completes Stage 2 (the final stage).
- */
 export function WinModal({
   stage1TimeMs,
   stage2TimeMs,
@@ -23,57 +20,61 @@ export function WinModal({
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-6">
       <motion.div
-        initial={{ scale: 0.88, opacity: 0, y: 20 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 280, damping: 24 }}
-        className="bg-white rounded-3xl shadow-2xl w-full max-w-md px-5 py-6 md:px-8 md:py-10 text-center space-y-4 md:space-y-8"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 260, damping: 22 }}
+        className="relative bg-[#0D1F3C] border-2 border-brand-primary w-full max-w-md flex flex-col items-center justify-center gap-8 px-8 py-10 overflow-hidden"
       >
-        <h2 className="text-xl md:text-3xl font-black text-brand-primary uppercase tracking-wider">
+        {/* Inner dashed border */}
+        <div className="absolute inset-3 border-2 border-dashed border-brand-primary/60 pointer-events-none" />
+
+        {/* Title */}
+        <h2 className="relative z-10 font-mono text-3xl text-brand-primary uppercase tracking-[0.3em] text-center">
           Congratulations!
         </h2>
 
-        <div className="flex gap-3 md:gap-5 justify-center">
-          <div className="space-y-2">
-            <p className="text-sm font-bold text-gray-700 uppercase tracking-widest">
-              Stage 1
-            </p>
-            <div className="mx-auto w-fit px-4 py-2 md:px-6 md:py-3 rounded-full bg-brand-primary-light">
-              <span className="text-lg md:text-2xl font-black text-brand-primary tracking-widest">
-                {formatTimeMs(stage1TimeMs)}
-              </span>
+        {/* Stage times */}
+        <div className="relative z-10 flex gap-5 justify-center w-full">
+          {[
+            { label: "Stage 1", value: formatTimeMs(stage1TimeMs) },
+            { label: "Stage 2", value: formatTimeMs(stage2TimeMs) },
+          ].map(({ label, value }) => (
+            <div
+              key={label}
+              className="flex flex-col items-center gap-2 flex-1"
+            >
+              <p className="font-mono text-xs text-brand-primary/60 uppercase tracking-widest">
+                {label}
+              </p>
+              <div className="w-full flex justify-center px-4 py-2 border border-brand-primary/40 bg-brand-primary/10">
+                <span className="font-mono text-lg text-brand-primary tracking-widest">
+                  {value}
+                </span>
+              </div>
             </div>
-          </div>
-
-          <div className="space-y-2">
-            <p className="text-sm font-bold text-gray-700 uppercase tracking-widest">
-              Stage 2
-            </p>
-            <div className="mx-auto w-fit px-4 py-2 md:px-6 md:py-3 rounded-full bg-brand-primary-light">
-              <span className="text-lg md:text-2xl font-black text-brand-primary tracking-widest">
-                {formatTimeMs(stage2TimeMs)}
-              </span>
-            </div>
-          </div>
+          ))}
         </div>
 
-        <div className="space-y-2">
-          <p className="text-sm font-bold text-gray-700 uppercase tracking-widest">
+        {/* Total time */}
+        <div className="relative z-10 flex flex-col items-center gap-2 w-full">
+          <p className="font-mono text-xs text-brand-primary/60 uppercase tracking-widest">
             Total Time
           </p>
-          <div className="mx-auto w-fit px-8 py-2 md:px-10 md:py-3 rounded-full bg-brand-primary-light">
-            <span className="text-lg md:text-2xl font-black text-brand-primary tracking-widest">
+          <div className="w-full flex justify-center px-10 py-3 border border-brand-primary/40 bg-brand-primary/10">
+            <span className="font-mono text-2xl text-brand-primary tracking-widest">
               {formatTimeMs(totalTimeMs)}
             </span>
           </div>
         </div>
 
+        {/* Leaderboard button */}
         <button
           onClick={onLeaderboard}
           disabled={submitting}
-          className="flex items-center justify-center gap-3 w-full py-3 md:py-4 rounded-full bg-brand-primary text-white font-black text-base uppercase tracking-widest hover:bg-brand-primary transition-colors shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
+          className="relative z-10 flex items-center justify-center gap-3 w-full py-3 border-2 border-brand-primary bg-brand-primary/10 font-mono text-sm text-brand-primary uppercase tracking-widest hover:bg-brand-primary/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          <Medal className="w-5 h-5" />
-          Leaderboard
+          <Medal className="w-4 h-4" />
+          {submitting ? "Submitting…" : "Leaderboard"}
         </button>
       </motion.div>
     </div>
