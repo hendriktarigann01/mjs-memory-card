@@ -2,12 +2,13 @@
 @import "tw-animate-css";
 
 @theme inline {
-  --color-brand-primary: #5BA4F5;
-  --color-brand-primary-dark: #0D1F3C;
-  --color-brand-primary-light: #E0F2F0;
+  --color-brand-primary: #5ba4f5;
+  --color-brand-primary-dark: #0d1f3c;
+  --color-brand-primary-light: #e0f2f0;
 }
 
 body {
+  font-family: "Courier New", Courier;
   color: var(--foreground);
   min-height: 100vh;
 }

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Volume2, VolumeX } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 interface HeaderProps {
   showSoundToggle?: boolean;
@@ -16,6 +17,7 @@ export function Header({
   onSoundToggle,
   className,
 }: HeaderProps) {
+  const pathname = usePathname();
   return (
     <header
       className={cn(
@@ -59,6 +61,16 @@ export function Header({
             <VolumeX className="w-5 h-5 text-gray-400" />
           )}
         </button>
+      )}
+      {pathname === "/leaderboard" && (
+        <Link
+          href="https://mjs-spin-wheel.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-4 py-2 rounded-xl bg-white/10 text-white hover:bg-white/30 transition"
+        >
+          Spin Wheel
+        </Link>
       )}
     </header>
   );
