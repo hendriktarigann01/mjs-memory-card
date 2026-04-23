@@ -65,7 +65,6 @@ export function Header({
       {pathname === "/leaderboard" && (
         <Link
           href="https://mjs-spin-wheel.vercel.app/"
-          target="_blank"
           rel="noopener noreferrer"
           className="px-4 py-2 rounded-xl bg-white/10 text-white hover:bg-white/30 transition"
         >
