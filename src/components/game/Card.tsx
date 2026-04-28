@@ -54,8 +54,8 @@ export function Card({
             <Image
               src="/common/logo-card.webp"
               alt="Logo Card"
-              fill 
-              className="object-contain p-2" 
+              fill
+              className="object-contain p-2"
               priority
             />
           </div>
@@ -65,7 +65,7 @@ export function Card({
         <div
           className={cn(
             "absolute inset-0 overflow-hidden flex items-center justify-center",
-            isMatched ? "bg-[#C0E6F9]" : "bg-white",
+            isMatched ? "bg-[#C0E6F9]" : "bg-[#C0E6F9]",
           )}
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
@@ -73,7 +73,7 @@ export function Card({
             src={getCardImageSrc(imageId)}
             alt={imageId}
             fill
-            className="object-contain"
+            className="object-contain p-5"
           />
 
           {/* Matched shimmer overlay */}
