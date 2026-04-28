@@ -16,7 +16,7 @@ import { GameOverModal } from "@/components/game/modal/GameOverModal";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { STAGE_CONFIG } from "@/constants/gameConfig";
-import { StageNumber } from "@/types/game";
+import Image from "next/image";
 import { formatTime, cn } from "@/lib/utils";
 
 type OverlayKind = "countdown" | "win" | "game-over" | null;
@@ -33,23 +33,36 @@ function TimerBar({
   const pct = Math.max(0, (timeLeft / totalTime) * 100);
   const isWarning = pct < 30;
   return (
-    <div className="w-full space-y-2 mt-5">
-      <p className="text-center font-light text-brand-primary text-xl uppercase tracking-widest">
+    <div className="w-full space-y-3 mt-10">
+      {/* Label Waktu */}
+      <p className="text-center font-sans font-extrabold text-[#0F5A7F] text-xl uppercase tracking-tight">
         Time Left:&nbsp;
         <span
           className={cn(
-            "font-light",
-            isWarning ? "text-red-400" : "text-brand-primary",
+            "font-extrabold",
+            isWarning ? "text-red-500" : "text-[#0F5A7F]",
           )}
         >
           {formatTime(timeLeft)}
         </span>
       </p>
-      <div className="w-full h-5 bg-[#002965] overflow-hidden rounded-full">
+
+      <div className="relative w-full h-6 bg-[#D1EAF8] rounded-full border-2 border-[#0F5A7F] shadow-sm">
+        <div className="absolute top-0 right-2 -translate-y-[90%] z-10">
+          <Image
+            src="/common/cat-full.webp"
+            alt="Cat Mascot"
+            width={65}
+            height={65}
+            className="object-contain"
+          />
+        </div>
+
+        {/* Progress Fill */}
         <motion.div
           className={cn(
-            "h-full",
-            isWarning ? "bg-red-400" : "bg-brand-primary",
+            "h-full rounded-full",
+            isWarning ? "bg-red-500" : "bg-white",
           )}
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.5 }}
@@ -201,10 +214,12 @@ export default function GamePage() {
 
   const pageWrapper = (children: React.ReactNode) => (
     <div className="min-h-screen bg-brand-primary-dark flex flex-col relative overflow-hidden">
-      <div
-        className="absolute inset-0 h-full w-full 
-                  bg-[linear-gradient(to_right,#002965_1px,transparent_1px),linear-gradient(to_bottom,#002965_1px,transparent_1px)] 
-                  bg-[size:45px_45px]"
+      <Image
+        src="/common/background.png"
+        alt="background"
+        fill
+        className="object-cover z-0"
+        priority
       />
       <Header
         showSoundToggle

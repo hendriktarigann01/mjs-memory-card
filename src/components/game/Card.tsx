@@ -47,27 +47,17 @@ export function Card({
       >
         {/* ── Card Back ─────────────────────────────────────── */}
         <div
-          className="relative w-full h-full bg-transparent border-[3px] border-brand-primary flex items-center justify-center p-4"
+          className="relative w-full h-full bg-brand-primary flex items-center justify-center overflow-hidden"
           style={{ backfaceVisibility: "hidden" }}
         >
-          {/* Grid overlay */}
-          <div
-            className="absolute inset-0 opacity-20 pointer-events-none"
-            style={{
-              backgroundImage: `
-                linear-gradient(to right, var(--brand-primary) 1px, transparent 1px),
-                linear-gradient(to bottom, var(--brand-primary) 1px, transparent 1px)
-              `,
-              backgroundSize: "40px 40px",
-            }}
-          />
-
-          {/* Inner dashed border */}
-          <div className="absolute inset-3 border border-dashed border-brand-primary pointer-events-none" />
-
-          {/* Back text */}
-          <div className="relative z-10 font-mono text-brand-primary text-xs uppercase tracking-widest leading-relaxed text-center whitespace-pre-line">
-            {`Arch:id\nX\nMJ Solution\nIndonesia`}
+          <div className="relative w-full h-full p-4 flex items-center justify-center">
+            <Image
+              src="/common/logo-card.webp"
+              alt="Logo Card"
+              fill 
+              className="object-contain p-2" 
+              priority
+            />
           </div>
         </div>
 
@@ -75,9 +65,7 @@ export function Card({
         <div
           className={cn(
             "absolute inset-0 overflow-hidden flex items-center justify-center",
-            isMatched
-              ? "bg-brand-primary border-2 border-brand-primary"
-              : "bg-white border",
+            isMatched ? "bg-[#C0E6F9]" : "bg-white",
           )}
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >

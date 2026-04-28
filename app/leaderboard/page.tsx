@@ -12,7 +12,7 @@ import { RankRow } from "@/components/leaderboard/RankRow";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { LeaderboardEntry } from "@/types/game";
-import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 // ── Leaderboard content ───────────────────────────────────────
 
@@ -78,11 +78,13 @@ export default function LeaderboardPage() {
 
   const pageWrapper = (children: React.ReactNode) => (
     <div className="min-h-screen bg-brand-primary-dark flex flex-col relative overflow-hidden">
-      <div
-        className="absolute inset-0 h-full w-full 
-                  bg-[linear-gradient(to_right,#002965_1px,transparent_1px),linear-gradient(to_bottom,#002965_1px,transparent_1px)] 
-                  bg-[size:45px_45px]"
-      />
+      <Image
+             src="/common/background.png"
+             alt="background"
+             fill
+             className="object-cover z-0"
+             priority
+           /> 
       <Header />
       {children}
       <Footer />
@@ -175,10 +177,8 @@ export default function LeaderboardPage() {
         onClick={handlePlayAgain}
         whileHover={{ scale: 1.04 }}
         whileTap={{ scale: 0.96 }}
-        className="relative flex items-center justify-center px-14 py-4 font-mono text-xl uppercase tracking-[0.2em]
-                   bg-[#0a192f] text-brand-primary border-2 border-brand-primary transition-all cursor-pointer"
+        className="flex items-center gap-3 px-12 py-3 rounded-full font-bold text-lg uppercase tracking-widest bg-[#C0E6F9] border-[3px] border-[#00698F] shadow-[0_4px_0_0_#00698F] text-[#005473] transition-all"
       >
-        <div className="absolute inset-1 border-2 border-dashed border-brand-primary pointer-events-none" />
         <span className="relative">Play Again</span>
       </motion.button>
     </main>,

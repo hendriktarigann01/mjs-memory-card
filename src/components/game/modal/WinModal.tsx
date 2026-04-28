@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Medal } from "lucide-react";
+import Image from "next/image";
 import { formatTimeMs } from "@/lib/utils";
 
 interface WinModalProps {
@@ -9,6 +9,20 @@ interface WinModalProps {
   onLeaderboard: () => void;
   submitting?: boolean;
 }
+
+// Komponen Pembantu untuk menampilkan Label Waktu dan Kotak Waktu yang seragam
+const TimeDisplay = ({ label, value }: { label: string; value: string }) => (
+  <div className="flex flex-col items-center gap-1.5 flex-1">
+    <p className="font-sans text-xs text-[#0F5A7F] font-bold uppercase tracking-wide">
+      {label}
+    </p>
+    <div className="w-full flex justify-center py-2.5 rounded-full bg-[#D1EAF8] border border-[#0F5A7F]">
+      <span className="font-sans text-xl text-[#0F5A7F] font-bold tracking-tight">
+        {value}
+      </span>
+    </div>
+  </div>
+);
 
 export function WinModal({
   stage1TimeMs,
@@ -23,59 +37,61 @@ export function WinModal({
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 260, damping: 22 }}
-        className="relative bg-[#0D1F3C] border-2 border-brand-primary w-full max-w-md flex flex-col items-center justify-center gap-8 px-8 py-10 overflow-hidden"
+        className="relative flex flex-col items-center justify-center w-full max-w-lg mt-24" // Tambahkan margin top untuk memberi ruang kelinci
       >
-        {/* Inner dashed border */}
-        <div className="absolute inset-3 border-2 border-dashed border-brand-primary/60 pointer-events-none" />
-
-        {/* Title */}
-        <h2 className="relative z-10 font-mono text-3xl text-brand-primary uppercase tracking-[0.3em] text-center">
-          Congratulations!
-        </h2>
-
-        {/* Stage times */}
-        <div className="relative z-10 flex gap-5 justify-center w-full">
-          {[
-            { label: "Stage 1", value: formatTimeMs(stage1TimeMs) },
-            { label: "Stage 2", value: formatTimeMs(stage2TimeMs) },
-          ].map(({ label, value }) => (
-            <div
-              key={label}
-              className="flex flex-col items-center gap-2 flex-1"
-            >
-              <p className="font-mono text-xs text-brand-primary/60 uppercase tracking-widest">
-                {label}
-              </p>
-              <div className="w-full flex justify-center px-4 py-2 border border-brand-primary/40 bg-brand-primary/10">
-                <span className="font-mono text-lg text-brand-primary tracking-widest">
-                  {value}
-                </span>
-              </div>
-            </div>
-          ))}
+        {/* Gambar Kelinci - Diposisikan secara absolut di atas kartu */}
+        <div className="absolute -top-2 right-5 -translate-y-[85%] z-20">
+          <Image
+            src="/common/rabbit.webp"
+            alt="Rabbit Mascot"
+            width={120} // Sesuaikan ukuran berdasarkan gambar aslinya
+            height={120}
+            priority
+          />
         </div>
 
-        {/* Total time */}
-        <div className="relative z-10 flex flex-col items-center gap-2 w-full">
-          <p className="font-mono text-xs text-brand-primary/60 uppercase tracking-widest">
-            Total Time
-          </p>
-          <div className="w-full flex justify-center px-10 py-3 border border-brand-primary/40 bg-brand-primary/10">
-            <span className="font-mono text-2xl text-brand-primary tracking-widest">
-              {formatTimeMs(totalTimeMs)}
-            </span>
+        {/* Kartu Utama */}
+        <div className="relative bg-white border-[3px] border-[#0F5A7F] rounded-[32px] w-full flex flex-col items-center justify-center gap-6 px-10 pt-12 pb-10 z-10">
+          {/* Judul Besar */}
+          <h2 className="font-sans text-4xl text-[#0F5A7F] font-extrabold uppercase tracking-tight text-center leading-none">
+            Congratulations!
+          </h2>
+
+          {/* Baris Waktu Panggung (Stage 1 & Stage 2) */}
+          <div className="flex gap-4 justify-center w-full">
+            <TimeDisplay label="TIME" value={formatTimeMs(stage1TimeMs)} />
+            <TimeDisplay label="TIME" value={formatTimeMs(stage2TimeMs)} />
           </div>
-        </div>
 
-        {/* Leaderboard button */}
-        <button
-          onClick={onLeaderboard}
-          disabled={submitting}
-          className="relative z-10 flex items-center justify-center gap-3 w-full py-3 border-2 border-brand-primary bg-brand-primary/10 font-mono text-sm text-brand-primary uppercase tracking-widest hover:bg-brand-primary/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-        >
-          <Medal className="w-4 h-4" />
-          {submitting ? "Submitting…" : "Leaderboard"}
-        </button>
+          {/* Baris Waktu Total */}
+          <div className="w-full">
+            <TimeDisplay label="TIME" value={formatTimeMs(totalTimeMs)} />
+          </div>
+
+          {/* Tombol Leaderboard - Menggunakan Ikon Medali dan Teks yang sesuai desain */}
+          <button
+            onClick={onLeaderboard}
+            disabled={submitting}
+            className="flex items-center justify-center gap-3 w-full mt-2 py-3 rounded-full border-[3px] border-[#0F5A7F] bg-[#BBE2F7] font-sans text-base text-[#0F5A7F] font-extrabold uppercase tracking-widest hover:bg-[#A9D8F2] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            {/* Ikon Medali dari image_0.png */}
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-5 h-5"
+            >
+              <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z"></path>
+              <path d="m15 11 1 10-4-2.5-4 2.5 1-10"></path>
+            </svg>
+            {submitting ? "Submitting…" : "View Leaderboard"}
+          </button>
+        </div>
       </motion.div>
     </div>
   );

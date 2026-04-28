@@ -30,7 +30,7 @@ interface PodiumPlayerProps {
 }
 
 export function PodiumPlayer({ entry, rank }: PodiumPlayerProps) {
-  const podiumBg = rank === 1 ? "bg-brand-primary" : "bg-[#25569E]";
+  const podiumBg = rank === 1 ? "bg-[#005473]" : "bg-[#C0E6F9]";
   const statsColor = rank === 1 ? "text-white" : TEXT_COLOR[rank];
   const dimension = rank === 1 ? "w-16 h-16" : "w-12 h-12";
 

@@ -85,10 +85,12 @@ function NameInput({
       maxLength={20}
       placeholder="Your name here"
       className={cn(
-        "w-full text-center font-light text-brand-primary-dark",
-        "bg-brand-primary",
+        "w-full rounded-full text-center font-bold text-brand-primary",
+        "border-[3px] border-brand-primary bg-[#C0E6F9]",
         "px-6 py-4 text-base",
-        "placeholder:!text-brand-primary-dark",
+        "focus:outline-none",
+        "transition-all",
+        "placeholder:!text-brand-primary/30",
         inputClassName,
       )}
       onKeyDown={(e) => e.key === "Enter" && value.trim() && onEnter()}
@@ -119,19 +121,35 @@ export default function HomePage() {
   if (variant === "desktop") {
     return (
       <div className="min-h-screen bg-brand-primary-dark flex flex-col relative overflow-hidden">
-        <div
-          className="absolute inset-0 h-full w-full 
-                    bg-[linear-gradient(to_right,#002965_1px,transparent_1px),linear-gradient(to_bottom,#002965_1px,transparent_1px)] 
-                    bg-[size:45px_45px]"
-        ></div>
+        <Image
+          src="/common/background.png"
+          alt="background"
+          fill
+          className="object-cover z-0"
+          priority
+        />
+        <Image
+          src="/common/dog.webp"
+          alt="dog"
+          width={300}
+          height={300}
+          className="absolute left-0 bottom-0"
+        />
+        <Image
+          src="/common/cat.webp"
+          alt="cat"
+          width={300}
+          height={300}
+          className="absolute right-0 bottom-0"
+        />
         <Header />
         <main className="flex-1 flex flex-col items-center justify-center px-16 gap-18 relative">
           {/* Title */}
           <div className="text-center">
-            <h1 className="text-xl font-light text-brand-primary tracking-wider uppercase">
+            <h1 className="text-4xl font-semibold text-brand-primary tracking-wider uppercase">
               Memory Games
             </h1>
-            <p className="text-xl font-light text-brand-primary mt-3 uppercase tracking-widest">
+            <p className="text-4xl font-semibold text-brand-primary mt-3 uppercase tracking-widest">
               Match all cards as fast as you can!
             </p>
           </div>
@@ -139,7 +157,7 @@ export default function HomePage() {
           {/* Name + Avatar side by side */}
           <div className="flex items-start gap-24">
             <div className="flex flex-col items-center gap-4">
-              <label className="text-lg font-light text-brand-primary uppercase tracking-widest">
+              <label className="text-lg font-semibold text-brand-primary uppercase tracking-widest">
                 Enter Your Name
               </label>
               <NameInput
@@ -151,7 +169,7 @@ export default function HomePage() {
             </div>
 
             <div className="flex flex-col items-center gap-4">
-              <label className="text-lg font-light text-brand-primary uppercase tracking-widest">
+              <label className="text-lg font-semibold text-brand-primary uppercase tracking-widest">
                 Select Your Avatar
               </label>
               <AvatarGrid
@@ -170,7 +188,7 @@ export default function HomePage() {
               whileHover={canPlay ? { scale: 1.04 } : {}}
               whileTap={canPlay ? { scale: 0.96 } : {}}
               className={cn(
-                "px-14 py-4 font-light text-xl uppercase tracking-widest",
+                "px-14 py-4 rounded-full font-black text-xl uppercase tracking-widest",
                 "bg-brand-primary text-white shadow-lg transition-all",
                 !canPlay && "opacity-40 cursor-not-allowed",
               )}
@@ -178,7 +196,7 @@ export default function HomePage() {
               Play Game
             </motion.button>
 
-            <span className="text-gray-400 font-light uppercase text-lg">
+            <span className="text-gray-400 font-semibold uppercase text-lg">
               or
             </span>
 
@@ -186,14 +204,13 @@ export default function HomePage() {
               onClick={handleViewLeaderboard}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
-              className="flex items-center gap-3 px-14 py-4 font-light text-xl uppercase tracking-widest bg-brand-primary text-white shadow-lg"
+              className="flex items-center gap-3 px-14 py-4 font-semibold text-xl uppercase tracking-widest bg-brand-primary text-white shadow-lg"
             >
               <Trophy className="w-6 h-6" />
               View Leaderboard
             </motion.button>
           </div>
         </main>
-
         <Footer />
       </div>
     );
@@ -202,26 +219,42 @@ export default function HomePage() {
   // ── Desktop / Mobile Layout ─────────────────────────────────
   return (
     <div className="min-h-screen bg-brand-primary-dark flex flex-col">
-      <div
-        className="absolute inset-0 h-full w-full 
-                    bg-[linear-gradient(to_right,#002965_1px,transparent_1px),linear-gradient(to_bottom,#002965_1px,transparent_1px)] 
-                    bg-[size:45px_45px]"
-      ></div>
+      <Image
+        src="/common/background.png"
+        alt="background"
+        fill
+        className="object-cover z-0"
+        priority
+      />
+      <Image
+        src="/common/dog.webp"
+        alt="dog"
+        width={300}
+        height={300}
+        className="absolute left-0 bottom-0"
+      />
+      <Image
+        src="/common/cat.webp"
+        alt="cat"
+        width={300}
+        height={300}
+        className="absolute right-0 bottom-0"
+      />
       <Header />
       <main className="flex-1 flex flex-col z-20 items-center justify-center px-6 gap-15 py-8">
         {/* Title */}
         <div className="text-center">
-          <h1 className="text-xl font-light text-brand-primary tracking-wider uppercase">
+          <h1 className="text-xl font-semibold text-brand-primary tracking-wider uppercase">
             Memory Games
           </h1>
-          <p className="text-xl font-light text-brand-primary mt-2 uppercase tracking-widest">
+          <p className="text-xl font-semibold text-brand-primary mt-2 uppercase tracking-widest">
             Match all cards as fast as you can!
           </p>
         </div>
 
         {/* Name input */}
         <div className="flex flex-col items-center gap-2 w-full max-w-xs">
-          <label className="text-sm font-light text-brand-primary uppercase tracking-widest">
+          <label className="text-sm font-semibold text-brand-primary uppercase tracking-widest">
             Enter Your Name
           </label>
           <NameInput
@@ -234,7 +267,7 @@ export default function HomePage() {
 
         {/* Avatar selector */}
         <div className="flex flex-col items-center gap-2">
-          <label className="text-sm font-light text-brand-primary uppercase tracking-widest">
+          <label className="text-sm font-semibold text-brand-primary uppercase tracking-widest">
             Select Your Avatar
           </label>
           <AvatarGrid selected={selectedAvatar} onSelect={setSelectedAvatar} />
@@ -247,37 +280,28 @@ export default function HomePage() {
           whileHover={canPlay ? { scale: 1.04 } : {}}
           whileTap={canPlay ? { scale: 0.96 } : {}}
           className={cn(
-            "relative flex items-center justify-center px-14 py-4 font-mono text-xl uppercase tracking-[0.2em]",
-            "bg-[#0a192f] text-brand-primary border-2 border-brand-primary transition-all",
-            !canPlay ? "opacity-40 cursor-not-allowed" : "cursor-pointer",
+            "px-12 py-3 rounded-full font-bold text-lg uppercase tracking-widest bg-[#C0E6F9] border-[3px] border-[#00698F] shadow-[0_4px_0_0_#00698F] text-[#005473] transition-all",
+            !canPlay && "opacity-40 cursor-not-allowed",
           )}
         >
-          <div className="absolute inset-1 border-2 border-dashed border-brand-primary pointer-events-none" />
-
-          <span className="relative">Play Game</span>
+          <span className="relative font-semibold">Play Game</span>
         </motion.button>
 
-        <p className="text-gray-400 font-light uppercase text-sm">or</p>
+        <p className="text-gray-400 font-semibold uppercase text-sm">or</p>
 
         {/* Leaderboard button */}
         <motion.button
           onClick={handleViewLeaderboard}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
-          className="relative flex items-center justify-center px-12 py-4 
-             bg-[#0a192f] text-brand-primary
-             border-2 border-brand-primary
-             transition-all group"
+          className="flex items-center gap-3 px-12 py-3 rounded-full font-bold text-lg uppercase tracking-widest bg-[#C0E6F9] border-[3px] border-[#00698F] shadow-[0_4px_0_0_#00698F] text-[#005473] transition-all"
         >
-          <div className="absolute inset-1 border-2 border-dashed border-brand-primarypointer-events-none" />
-
-          <span className="relative flex items-center gap-3 font-mono text-xl tracking-[0.2em] uppercase">
+          <span className="relative flex items-center font-semibold gap-3 text-xl tracking-[0.2em] uppercase">
             <Trophy className="w-5 h-5" />
             View Leaderboard
           </span>
         </motion.button>
       </main>
-
       <Footer />
     </div>
   );

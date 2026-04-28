@@ -25,27 +25,42 @@ export function Header({
         className,
       )}
     >
-      <div className="flex gap-5">
-        <Link href="/" aria-label="Home">
-          <Image
-            src="/mjs_logo_text.png"
-            width={120}
-            height={48}
-            alt="MJ Solution Indonesia"
-            className="h-10 w-auto md:h-14"
-            priority
-          />
-        </Link>
-        <Link href="/" aria-label="Home">
-          <Image
-            src="/arch_id.png"
-            width={120}
-            height={48}
-            alt="Arch ID"
-            className="h-10 w-auto md:h-14"
-            priority
-          />
-        </Link>
+      <div className="w-full flex justify-between items-center">
+        <div>
+          <Link href="/" aria-label="Home">
+            <Image
+              src="/mjs_logo_text.png"
+              width={120}
+              height={48}
+              alt="MJ Solution Indonesia"
+              className="h-10 w-auto md:h-14"
+              priority
+            />
+          </Link>
+        </div>
+
+        <div className="flex gap-5">
+          <Link href="/" aria-label="Home">
+            <Image
+              src="/mjs_logo_text.png"
+              width={120}
+              height={48}
+              alt="MJ Solution Indonesia"
+              className="h-10 w-auto md:h-14"
+              priority
+            />
+          </Link>
+          <Link href="/" aria-label="Home">
+            <Image
+              src="/arch_id.png"
+              width={120}
+              height={48}
+              alt="Arch ID"
+              className="h-10 w-auto md:h-14"
+              priority
+            />
+          </Link>
+        </div>
       </div>
 
       {/* Sound toggle (optional) */}
