@@ -85,7 +85,7 @@ function NameInput({
       maxLength={20}
       placeholder="Your name here"
       className={cn(
-        "w-full rounded-full text-center font-bold text-brand-primary",
+        "w-full tracking-widest rounded-full text-center font-bold text-brand-primary",
         "border-[3px] border-brand-primary bg-[#C0E6F9]",
         "px-6 py-4 text-base",
         "focus:outline-none",

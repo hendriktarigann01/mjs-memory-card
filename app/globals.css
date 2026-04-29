@@ -7,8 +7,11 @@
   --color-brand-primary-light: #ffd288; /* light-amber */
 }
 
+:root {
+  font-family: var(--font-chewy);
+}
+
 body {
-  font-family: "Courier New", Courier;
   color: var(--foreground);
   min-height: 100vh;
 }
