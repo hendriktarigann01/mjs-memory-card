@@ -1,3 +1,4 @@
+import { memo, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Card as CardType } from "@/types/game";
 import { Card } from "./Card";
@@ -16,7 +17,7 @@ interface GameBoardProps {
   variant?: "default" | "signage";
 }
 
-export function GameBoard({
+export const GameBoard = memo(function GameBoard({
   cards,
   flippedCards,
   matchedCards,
@@ -24,6 +25,23 @@ export function GameBoard({
   variant = "default",
 }: GameBoardProps) {
   const cols = COLS[variant];
+  const isSignage = variant === "signage";
+
+  // O(1) lookup — re-computed only when the arrays change identity
+  const flippedSet = useMemo(
+    () => new Set(flippedCards),
+    [flippedCards],
+  );
+  const matchedSet = useMemo(
+    () => new Set(matchedCards),
+    [matchedCards],
+  );
+
+  // Stable callback reference — avoids re-creating a closure per-card per-render
+  const handleClick = useCallback(
+    (cardId: string) => onCardClick(cardId),
+    [onCardClick],
+  );
 
   return (
     <motion.div
@@ -41,13 +59,15 @@ export function GameBoard({
             key={card.id}
             id={card.id}
             imageId={card.imageId}
-            isFlipped={flippedCards.includes(card.id)}
-            isMatched={matchedCards.includes(card.id)}
-            onClick={() => onCardClick(card.id)}
-            size={variant === "signage" ? "signage" : "default"}
+            isFlipped={flippedSet.has(card.id)}
+            isMatched={matchedSet.has(card.id)}
+            onClick={handleClick}
+            size={isSignage ? "signage" : "default"}
           />
         ))}
       </div>
     </motion.div>
   );
-}
+});
+
+GameBoard.displayName = "GameBoard";

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -9,11 +10,11 @@ interface CardProps {
   imageId: CardImageId;
   isFlipped: boolean;
   isMatched: boolean;
-  onClick: () => void;
+  onClick: (cardId: string) => void;
   size?: "default" | "signage";
 }
 
-export function Card({
+export const Card = memo(function Card({
   id,
   imageId,
   isFlipped,
@@ -24,7 +25,7 @@ export function Card({
   return (
     <motion.div
       layoutId={id}
-      onClick={onClick}
+      onClick={() => onClick(id)}
       className={cn(
         "relative w-full aspect-square cursor-pointer select-none",
         isMatched && "cursor-default",
@@ -88,4 +89,6 @@ export function Card({
       </motion.div>
     </motion.div>
   );
-}
+});
+
+Card.displayName = "Card";

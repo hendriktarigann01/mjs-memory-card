@@ -1,7 +1,7 @@
 "use client";
 export const dynamic = "force-dynamic";
 
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -108,21 +108,24 @@ export default function HomePage() {
   const [name, setName] = useState(player.name);
   const [selectedAvatar, setSelectedAvatar] = useState<AvatarId>(player.avatar);
 
-  const canPlay = name.trim().length > 0;
+  const canPlay = useMemo(() => name.trim().length > 0, [name]);
 
-  const handlePlayGame = () => {
+  const handlePlayGame = useCallback(() => {
     if (!canPlay) return;
     setPlayer({ name: name.trim(), avatar: selectedAvatar });
     router.push("/game");
-  };
+  }, [canPlay, name, selectedAvatar, setPlayer, router]);
 
-  const handleViewLeaderboard = () => router.push("/leaderboard");
+  const handleViewLeaderboard = useCallback(
+    () => router.push("/leaderboard"),
+    [router],
+  );
   // ── Digital Signage Layout (≥ 1280 px) ─────────────────────
   if (variant === "desktop") {
     return (
       <div className="min-h-screen bg-brand-primary-dark flex flex-col relative overflow-hidden">
         <Image
-          src="/common/background.png"
+          src="/common/background.webp"
           alt="background"
           fill
           className="object-cover z-0"
@@ -220,7 +223,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-brand-primary-dark flex flex-col">
       <Image
-        src="/common/background.png"
+        src="/common/background.webp"
         alt="background"
         fill
         className="object-cover z-0"

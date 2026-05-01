@@ -1,7 +1,8 @@
 "use client";
 export const dynamic = "force-dynamic";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo } from "react";
+import nextDynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useGameStore } from "@/store/gameStore";
@@ -10,14 +11,25 @@ import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { useLayoutVariant } from "@/hooks/useLayoutVariant";
 import { audioManager } from "@/lib/audio";
 import { GameBoard } from "@/components/game/GameBoard";
-import { StageCountdown } from "@/components/game/StageCountdown";
-import { WinModal } from "@/components/game/modal/WinModal";
-import { GameOverModal } from "@/components/game/modal/GameOverModal";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { STAGE_CONFIG } from "@/constants/gameConfig";
 import Image from "next/image";
 import { formatTime, cn } from "@/lib/utils";
+
+// ── Lazy-loaded overlays (not needed on initial render) ───────────────────────
+const StageCountdown = nextDynamic(
+  () => import("@/components/game/StageCountdown").then((m) => m.StageCountdown),
+  { ssr: false },
+);
+const WinModal = nextDynamic(
+  () => import("@/components/game/modal/WinModal").then((m) => m.WinModal),
+  { ssr: false },
+);
+const GameOverModal = nextDynamic(
+  () => import("@/components/game/modal/GameOverModal").then((m) => m.GameOverModal),
+  { ssr: false },
+);
 
 type OverlayKind = "countdown" | "win" | "game-over" | null;
 
@@ -172,12 +184,14 @@ export default function GamePage() {
     router.push("/leaderboard");
   }, [submitting, addScore, player, moves, currentStage, resetGame, router]);
 
-  const handleSoundToggle = () =>
-    setSettings({ soundEnabled: !settings.soundEnabled });
+  const handleSoundToggle = useCallback(
+    () => setSettings({ soundEnabled: !settings.soundEnabled }),
+    [settings.soundEnabled, setSettings],
+  );
 
   // ── Overlay renderer ──────────────────────────────────────────────────────
 
-  const renderOverlay = () => {
+  const overlayNode = useMemo(() => {
     switch (overlay) {
       case "countdown":
         return (
@@ -208,14 +222,15 @@ export default function GamePage() {
       default:
         return null;
     }
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [overlay, countdownKey, currentStage, stage1ElapsedMs, finalTotalMs, submitting, timeLeft]);
 
   // ── Shared wrapper ────────────────────────────────────────────────────────
 
   const pageWrapper = (children: React.ReactNode) => (
     <div className="min-h-screen bg-brand-primary-dark flex flex-col relative overflow-hidden">
       <Image
-        src="/common/background.png"
+        src="/common/background.webp"
         alt="background"
         fill
         className="object-cover z-0"
@@ -228,7 +243,7 @@ export default function GamePage() {
       />
       {children}
       <Footer />
-      {renderOverlay()}
+      {overlayNode}
     </div>
   );
 

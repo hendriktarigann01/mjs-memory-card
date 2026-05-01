@@ -1,12 +1,13 @@
 "use client";
 export const dynamic = "force-dynamic";
 
+import { useCallback, memo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { RefreshCw, ArrowLeft } from "lucide-react";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { useLayoutVariant } from "@/hooks/useLayoutVariant";
+import { RefreshCw, ArrowLeft } from "lucide-react";
 import { PodiumPlayer } from "@/components/leaderboard/PodiumPlayer";
 import { RankRow } from "@/components/leaderboard/RankRow";
 import { Header } from "@/components/layout/Header";
@@ -21,7 +22,7 @@ interface LeaderboardContentProps {
   layout: "default" | "signage";
 }
 
-function LeaderboardContent({ entries, layout }: LeaderboardContentProps) {
+const LeaderboardContent = memo(function LeaderboardContent({ entries, layout }: LeaderboardContentProps) {
   if (entries.length === 0) {
     return (
       <div className="flex items-center justify-center py-16 text-brand-primary font-light uppercase tracking-widest opacity-60">
@@ -65,7 +66,9 @@ function LeaderboardContent({ entries, layout }: LeaderboardContentProps) {
       {rankList}
     </div>
   );
-}
+});
+
+LeaderboardContent.displayName = "LeaderboardContent";
 
 // ── Page ──────────────────────────────────────────────────────
 
@@ -74,17 +77,17 @@ export default function LeaderboardPage() {
   const variant = useLayoutVariant();
   const { leaderboard, loading, refetch } = useLeaderboard();
 
-  const handlePlayAgain = () => router.push("/");
+  const handlePlayAgain = useCallback(() => router.push("/"), [router]);
 
   const pageWrapper = (children: React.ReactNode) => (
     <div className="min-h-screen bg-brand-primary-dark flex flex-col relative overflow-hidden">
       <Image
-             src="/common/background.png"
-             alt="background"
-             fill
-             className="object-cover z-0"
-             priority
-           /> 
+        src="/common/background.webp"
+        alt="background"
+        fill
+        className="object-cover z-0"
+        priority
+      />
       <Header />
       {children}
       <Footer />

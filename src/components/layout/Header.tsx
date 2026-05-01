@@ -76,16 +76,7 @@ export function Header({
             <VolumeX className="w-5 h-5 text-gray-400" />
           )}
         </button>
-      )}
-      {pathname === "/leaderboard" && (
-        <Link
-          href="https://mjs-spin-wheel.vercel.app/"
-          rel="noopener noreferrer"
-          className="px-4 py-2 rounded-xl bg-white/10 text-white hover:bg-white/30 transition"
-        >
-          Spin Wheel
-        </Link>
-      )}
+      )}  
     </header>
   );
 }
