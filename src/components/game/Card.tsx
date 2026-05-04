@@ -66,7 +66,7 @@ export const Card = memo(function Card({
         <div
           className={cn(
             "absolute inset-0 overflow-hidden flex items-center justify-center",
-            isMatched ? "bg-[#C0E6F9]" : "bg-[#C0E6F9]",
+            isMatched ? "bg-brand-primary" : "bg-[#FFECC5]",
           )}
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >

@@ -32,7 +32,7 @@ export function RankRow({ entry, rank }: RankRowProps) {
   const trend = TREND_BY_RANK[rank] ?? "neutral";
 
   return (
-    <div className="flex items-center gap-3 bg-[#C0E6F9] border border-brand-primary rounded-2xl px-4 py-3">
+    <div className="flex items-center gap-3 bg-brand-primary-light rounded-full px-4 py-3">
       {/* Avatar */}
       <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
         <Image
@@ -45,16 +45,16 @@ export function RankRow({ entry, rank }: RankRowProps) {
 
       {/* Name + time */}
       <div className="flex-1 min-w-0">
-        <p className="font-bold text-brand-primary text-sm uppercase tracking-wide truncate">
+        <p className="font-bold text-white text-sm uppercase tracking-wide truncate">
           {entry.player_name}
         </p>
-        <p className="text-xs text-brand-primary font-medium font-mono">
+        <p className="text-xs text-white font-medium font-mono">
           {formatTimeMs(entry.time_ms)}
         </p>
       </div>
 
       {/* Rank badge */}
-      <div className="w-8 h-8 rounded-full bg-[#005473] flex items-center justify-center font-black text-white text-sm flex-shrink-0">
+      <div className="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center font-black text-white text-sm flex-shrink-0">
         {rank}
       </div>
 

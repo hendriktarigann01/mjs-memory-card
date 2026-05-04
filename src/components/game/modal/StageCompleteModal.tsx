@@ -21,16 +21,6 @@ export function StageCompleteModal({
         animate={{ scale: 1, opacity: 1 }}
         className="relative flex flex-col items-center justify-center w-full max-w-sm mt-20"
       >
-        {/* Rabbit Mascot */}
-        <div className="absolute -top-2 right-5 -translate-y-[85%] z-20">
-          <Image
-            src="/common/rabbit.webp"
-            alt="Rabbit"
-            width={100}
-            height={100}
-          />
-        </div>
-
         {/* Card Body */}
         <div className="relative bg-white border-[3px] border-[#0F5A7F] rounded-[32px] w-full flex flex-col items-center gap-6 px-8 pt-12 pb-10 z-10 shadow-xl">
           {/* Layout dari image_1.png */}

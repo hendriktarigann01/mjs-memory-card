@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Chewy } from "next/font/google"; // Import Chewy
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-const chewy = Chewy({
-  weight: "400",
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-chewy",
+  variable: "--font-plus-jakarta",
   display: "swap",
 });
 
@@ -21,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={chewy.variable}>
-      <body className="font-chewy antialiased bg-[#0169dc]">
+    <html lang="en" className={plusJakartaSans.variable}>
+      <body className="font-plus-jakarta antialiased bg-[#0169dc]">
         <div className="min-h-screen flex flex-col">{children}</div>
       </body>
     </html>

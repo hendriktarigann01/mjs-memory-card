@@ -22,54 +22,54 @@ export function GameOverModal({
         animate={{ scale: 1, opacity: 1 }}
         className="relative flex flex-col items-center justify-center w-full max-w-sm mt-20"
       >
-        {/* Rabbit Mascot */}
-        <div className="absolute -top-2 right-5 -translate-y-[85%] z-20">
-          <Image
-            src="/common/rabbit.webp"
-            alt="Rabbit"
-            width={100}
-            height={100}
-          />
-        </div>
-
         {/* Card Body */}
-        <div className="relative bg-white border-[3px] border-[#0F5A7F] rounded-[32px] w-full flex flex-col items-center gap-6 px-8 pt-12 pb-10 z-10">
-          <h2 className="font-sans text-3xl text-[#0F5A7F] font-extrabold uppercase tracking-tight text-center">
+        <div className="relative bg-white border-[3px] border-brand-primary rounded-[32px] w-full flex flex-col items-center gap-6 px-8 pt-12 pb-10 z-10">
+          <h2 className="font-sans text-3xl text-brand-primary font-extrabold uppercase tracking-tight text-center">
             Game Over
           </h2>
 
           <div className="flex flex-col items-center gap-1.5 w-full">
-            <p className="font-sans text-xs text-[#0F5A7F] font-bold uppercase">
+            <p className="font-sans text-xs text-brand-primary font-bold uppercase">
               Time Used
             </p>
-            <div className="w-full flex justify-center py-3 rounded-full bg-[#D1EAF8] border border-[#0F5A7F]">
-              <span className="font-sans text-2xl text-[#0F5A7F] font-bold">
+            <div className="w-full flex justify-center py-3 rounded-full bg-white border border-brand-primary">
+              <span className="font-sans text-2xl text-brand-primary font-bold">
                 {formatTime(timeUsed)}
               </span>
             </div>
           </div>
 
           <div className="flex flex-col gap-3 w-full">
-            <button
+            <motion.button
               onClick={onLeaderboard}
-              className="flex items-center justify-center gap-3 w-full py-3 rounded-full border-[3px] border-[#0F5A7F] bg-[#BBE2F7] font-sans text-sm text-[#0F5A7F] font-extrabold uppercase hover:bg-[#A9D8F2] transition-colors"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
+              className="flex items-center justify-center gap-3 w-full py-3 rounded-full bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] font-sans text-sm text-brand-primary font-extrabold uppercase tracking-widest transition-all"
             >
               <Medal className="w-4 h-4" />
               Leaderboard
-            </button>
+            </motion.button>
             <div className="flex gap-3">
-              <Link
-                href="/"
-                className="flex items-center justify-center w-full py-3 rounded-full border-[3px] border-[#0F5A7F] bg-white font-sans text-sm text-[#0F5A7F] font-extrabold uppercase hover:bg-gray-50 transition-colors"
+              <motion.div
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                className="w-full"
               >
-                Home
-              </Link>
-              <button
+                <Link
+                  href="/"
+                  className="flex items-center justify-center w-full py-3 rounded-full bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] font-sans text-sm text-brand-primary font-extrabold uppercase tracking-widest transition-all"
+                >
+                  Home
+                </Link>
+              </motion.div>
+              <motion.button
                 onClick={onRetry}
-                className="w-full py-3 rounded-full border-[3px] border-[#0F5A7F] bg-[#BBE2F7] font-sans text-sm text-[#0F5A7F] font-extrabold uppercase hover:bg-[#A9D8F2] transition-colors"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                className="w-full py-3 rounded-full bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] font-sans text-sm text-brand-primary font-extrabold uppercase tracking-widest transition-all"
               >
                 Retry
-              </button>
+              </motion.button>
             </div>
           </div>
         </div>

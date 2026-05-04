@@ -39,18 +39,3 @@ export function formatTimeMs(ms: number): string {
   const millis = Math.floor((ms % 1000) / 10);
   return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}.${millis.toString().padStart(2, "0")}`;
 }
-
-/**
- * Legacy score calculation — kept for reference but no longer stored in DB.
- */
-export function calculateScore(
-  moves: number,
-  timeRemaining: number,
-  isPerfect: boolean,
-): number {
-  const baseScore = 1000;
-  const movePenalty = moves * 5;
-  const timeBonus = timeRemaining * 10;
-  const perfectBonus = isPerfect ? 500 : 0;
-  return Math.max(0, baseScore - movePenalty + timeBonus + perfectBonus);
-}

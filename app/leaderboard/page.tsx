@@ -22,7 +22,10 @@ interface LeaderboardContentProps {
   layout: "default" | "signage";
 }
 
-const LeaderboardContent = memo(function LeaderboardContent({ entries, layout }: LeaderboardContentProps) {
+const LeaderboardContent = memo(function LeaderboardContent({
+  entries,
+  layout,
+}: LeaderboardContentProps) {
   if (entries.length === 0) {
     return (
       <div className="flex items-center justify-center py-16 text-brand-primary font-light uppercase tracking-widest opacity-60">
@@ -159,7 +162,6 @@ export default function LeaderboardPage() {
           <RefreshCw className="w-4 h-4" />
         </button>
       </div>
-
       {/* Content */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
@@ -174,16 +176,16 @@ export default function LeaderboardPage() {
           <LeaderboardContent entries={leaderboard} layout="default" />
         )}
       </motion.div>
-
-      {/* Play Again button — matching HomePage style */}
+      {/* Play Again button */}
       <motion.button
         onClick={handlePlayAgain}
         whileHover={{ scale: 1.04 }}
         whileTap={{ scale: 0.96 }}
-        className="flex items-center gap-3 px-12 py-3 rounded-full font-bold text-lg uppercase tracking-widest bg-[#C0E6F9] border-[3px] border-[#00698F] shadow-[0_4px_0_0_#00698F] text-[#005473] transition-all"
+        className="flex items-center gap-3 px-12 py-3 rounded-full font-bold text-lg uppercase tracking-widest bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] text-brand-primary transition-all"
       >
         <span className="relative">Play Again</span>
       </motion.button>
-    </main>,
+    
+    </main>
   );
 }

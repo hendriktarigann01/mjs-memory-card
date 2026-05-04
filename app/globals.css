@@ -2,13 +2,13 @@
 @import "tw-animate-css";
 
 @theme inline {
-  --color-brand-primary: #13a0d3; /* blue */
-  --color-brand-primary-dark: #ffd744; /* amber */
-  --color-brand-primary-light: #ffd288; /* light-amber */
+  --color-brand-primary: #191B34; /* blue */
+  --color-brand-primary-dark: #212121; /* dark-gray */
+  --color-brand-primary-light: #FFAC00CC; /* light-amber */
 }
 
 :root {
-  font-family: var(--font-chewy);
+  font-family: var(--font-plus-jakarta);
 }
 
 body {
