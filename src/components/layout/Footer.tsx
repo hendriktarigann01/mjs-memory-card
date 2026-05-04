@@ -8,9 +8,10 @@ export function Footer({ className }: FooterProps) {
   return (
     <footer
       className={cn(
-        "px-6 pb-5 text-xs font-light text-brand-primary uppercase tracking-widest",
-        "text-center",
-        className,
+         "fixed bottom-6 left-1/2 -translate-x-1/2 z-20",
+        "w-max px-10 h-14 flex items-center justify-center rounded-full",
+        "uppercase tracking-widest font-bold text-brand-primary text-lg",
+        "bg-white/15 backdrop-blur-md border border-white/30 shadow-2xl",
       )}
     >
       By MJ Solution Indonesia
