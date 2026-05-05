@@ -56,7 +56,7 @@ export const Card = memo(function Card({
               src="/common/logo-card.webp"
               alt="Logo Card"
               fill
-              className="object-contain p-2"
+              className="object-contain p-4"
               priority
             />
           </div>
@@ -66,7 +66,7 @@ export const Card = memo(function Card({
         <div
           className={cn(
             "absolute inset-0 overflow-hidden flex items-center justify-center",
-            isMatched ? "bg-brand-primary" : "bg-[#FFECC5]",
+            isMatched ? "bg-[#FFECC5]" : "bg-[#FFECC5]",
           )}
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >

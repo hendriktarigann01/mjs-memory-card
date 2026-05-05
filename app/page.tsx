@@ -195,7 +195,7 @@ export default function HomePage() {
               onClick={handleViewLeaderboard}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
-              className="flex items-center gap-3 px-14 py-4 font-semibold text-2xl uppercase tracking-widest bg-brand-primary text-white shadow-lg"
+              className="flex rounded-full items-center gap-3 px-14 py-4 font-semibold text-2xl uppercase tracking-widest bg-brand-primary text-white shadow-lg"
             >
               <Trophy className="w-6 h-6" />
               View Leaderboard

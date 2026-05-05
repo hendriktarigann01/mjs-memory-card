@@ -15,8 +15,8 @@ const TimeDisplay = ({ label, value }: { label: string; value: string }) => (
     <p className="font-sans text-xs text-brand-primary font-bold uppercase tracking-wide">
       {label}
     </p>
-    <div className="flex items-center justify-center gap-3 w-full mt-2 py-3 rounded-full bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] font-sans text-sm text-brand-primary font-extrabold uppercase tracking-widest transition-all disabled:opacity-40 disabled:cursor-not-allowed">
-      <span className="font-sans text-2xl text-brand-primary font-bold tracking-tight">
+    <div className="flex items-center justify-center gap-3 w-full mt-2 py-3 rounded-full bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] font-sans text-lg text-brand-primary font-extrabold uppercase tracking-widest transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+      <span className="font-sans text-lg text-brand-primary font-extrabold tracking-widest">
         {value}
       </span>
     </div>
@@ -58,7 +58,7 @@ export function WinModal({
             disabled={submitting}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
-            className="flex items-center justify-center gap-3 w-full mt-2 py-3 rounded-full bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] font-sans text-sm text-brand-primary font-extrabold uppercase tracking-widest transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center justify-center gap-3 w-full mt-2 py-3 rounded-full bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] font-sans text-lg text-brand-primary font-extrabold uppercase tracking-widest transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <svg
               width="24"

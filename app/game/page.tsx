@@ -19,7 +19,8 @@ import { formatTime, cn } from "@/lib/utils";
 
 // ── Lazy-loaded overlays (not needed on initial render) ───────────────────────
 const StageCountdown = nextDynamic(
-  () => import("@/components/game/StageCountdown").then((m) => m.StageCountdown),
+  () =>
+    import("@/components/game/StageCountdown").then((m) => m.StageCountdown),
   { ssr: false },
 );
 const WinModal = nextDynamic(
@@ -27,7 +28,10 @@ const WinModal = nextDynamic(
   { ssr: false },
 );
 const GameOverModal = nextDynamic(
-  () => import("@/components/game/modal/GameOverModal").then((m) => m.GameOverModal),
+  () =>
+    import("@/components/game/modal/GameOverModal").then(
+      (m) => m.GameOverModal,
+    ),
   { ssr: false },
 );
 
@@ -59,22 +63,14 @@ function TimerBar({
         </span>
       </p>
 
-      <div className="relative w-full h-6 bg-[#D1EAF8] rounded-full border-2 border-[#0F5A7F] shadow-sm">
-        <div className="absolute top-0 right-2 -translate-y-[90%] z-10">
-          <Image
-            src="/common/cat-full.webp"
-            alt="Cat Mascot"
-            width={65}
-            height={65}
-            className="object-contain"
-          />
-        </div>
+      <div className="relative w-full h-4 bg-[#D8D8D8] rounded-full">
+        <div className="absolute top-0 right-2 -translate-y-[90%] z-10"></div>
 
         {/* Progress Fill */}
         <motion.div
           className={cn(
             "h-full rounded-full",
-            isWarning ? "bg-red-500" : "bg-white",
+            isWarning ? "bg-red-500" : "bg-brand-primary",
           )}
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.5 }}
@@ -222,8 +218,16 @@ export default function GamePage() {
       default:
         return null;
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [overlay, countdownKey, currentStage, stage1ElapsedMs, finalTotalMs, submitting, timeLeft]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    overlay,
+    countdownKey,
+    currentStage,
+    stage1ElapsedMs,
+    finalTotalMs,
+    submitting,
+    timeLeft,
+  ]);
 
   // ── Shared wrapper ────────────────────────────────────────────────────────
 

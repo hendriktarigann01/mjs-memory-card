@@ -32,21 +32,24 @@ export function GameOverModal({
             <p className="font-sans text-xs text-brand-primary font-bold uppercase">
               Time Used
             </p>
-            <div className="w-full flex justify-center py-3 rounded-full bg-white border border-brand-primary">
-              <span className="font-sans text-2xl text-brand-primary font-bold">
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="flex items-center justify-center w-full py-3 rounded-full bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] transition-all"
+            >
+              <span className="font-sans text-lg text-brand-primary font-extrabold tracking-widest">
                 {formatTime(timeUsed)}
               </span>
-            </div>
+            </motion.div>
           </div>
 
-          <div className="flex flex-col gap-3 w-full">
+          <div className="flex flex-col gap-6 w-full">
             <motion.button
               onClick={onLeaderboard}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
-              className="flex items-center justify-center gap-3 w-full py-3 rounded-full bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] font-sans text-sm text-brand-primary font-extrabold uppercase tracking-widest transition-all"
+              className="flex items-center justify-center gap-3 w-full py-3 rounded-full bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] font-sans text-md text-brand-primary font-extrabold uppercase tracking-widest transition-all"
             >
-              <Medal className="w-4 h-4" />
+              <Medal className="w-5 h-5" />
               Leaderboard
             </motion.button>
             <div className="flex gap-3">
@@ -57,7 +60,7 @@ export function GameOverModal({
               >
                 <Link
                   href="/"
-                  className="flex items-center justify-center w-full py-3 rounded-full bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] font-sans text-sm text-brand-primary font-extrabold uppercase tracking-widest transition-all"
+                  className="flex items-center justify-center w-full py-3 rounded-full bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] font-sans text-md text-brand-primary font-extrabold uppercase tracking-widest transition-all"
                 >
                   Home
                 </Link>
@@ -66,7 +69,7 @@ export function GameOverModal({
                 onClick={onRetry}
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
-                className="w-full py-3 rounded-full bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] font-sans text-sm text-brand-primary font-extrabold uppercase tracking-widest transition-all"
+                className="w-full py-3 rounded-full bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] font-sans text-md text-brand-primary font-extrabold uppercase tracking-widest transition-all"
               >
                 Retry
               </motion.button>

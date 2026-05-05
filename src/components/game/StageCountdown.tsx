@@ -50,7 +50,7 @@ export function StageCountdown({ stage, onComplete }: StageCountdownProps) {
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 1.4, opacity: 0 }}
                 transition={{ duration: 0.35 }}
-                className="w-20 h-20 rounded-full bg-brand-primary flex items-center justify-center shadow-lg shadow-brand-primary/30"
+                className="w-20 h-20 rounded-full bg-brand-primary flex items-center justify-center"
               >
                 <span className="text-4xl font-extrabold text-white">
                   {count}
