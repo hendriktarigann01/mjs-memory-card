@@ -11,7 +11,7 @@ export const CARD_IMAGES: CardImageId[] = [
 ];
 
 export const getCardImageSrc = (imageId: CardImageId): string =>
-  `/card/${imageId}.png`;
+  `/card/${imageId}.webp`;
 
 /** Avatar images for player — lives at public/icons/profile-{n}.png */
 export const getAvatarImageSrc = (avatarId: AvatarId): string =>

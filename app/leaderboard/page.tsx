@@ -2,11 +2,9 @@
 export const dynamic = "force-dynamic";
 
 import { useCallback, memo } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
-import { RefreshCw, ArrowLeft } from "lucide-react";
 import { PodiumPlayer } from "@/components/leaderboard/PodiumPlayer";
 import { RankRow } from "@/components/leaderboard/RankRow";
 import { Header } from "@/components/layout/Header";
@@ -25,7 +23,7 @@ const LeaderboardContent = memo(function LeaderboardContent({
 }: LeaderboardContentProps) {
   if (entries.length === 0) {
     return (
-      <div className="flex items-center justify-center py-16 text-brand-primary font-light uppercase tracking-widest opacity-60">
+      <div className="flex items-center justify-center py-16 text-white font-light uppercase tracking-widest opacity-60">
         No scores yet. Be the first!
       </div>
     );
@@ -34,17 +32,15 @@ const LeaderboardContent = memo(function LeaderboardContent({
   const [first, second, third, ...rest] = entries;
 
   return (
-    <div className="space-y-8">
-      {/* Podium */}
-      <div className="flex items-end justify-center">
-        {third && <PodiumPlayer entry={third} rank={3} />}
+    <div className="flex flex-col gap-10 w-full">
+      <div className="flex items-end justify-center gap-4">
         {first && <PodiumPlayer entry={first} rank={1} />}
         {second && <PodiumPlayer entry={second} rank={2} />}
+        {third && <PodiumPlayer entry={third} rank={3} />}
       </div>
 
-      {/* Rank list */}
       {rest.length > 0 && (
-        <div className="space-y-2">
+        <div className="flex flex-col gap-5">
           {rest.map((entry, i) => (
             <RankRow key={entry.id} entry={entry} rank={i + 4} />
           ))}
@@ -60,12 +56,12 @@ LeaderboardContent.displayName = "LeaderboardContent";
 
 export default function LeaderboardPage() {
   const router = useRouter();
-  const { leaderboard, loading, refetch } = useLeaderboard();
+  const { leaderboard, loading } = useLeaderboard();
 
   const handlePlayAgain = useCallback(() => router.push("/"), [router]);
 
   return (
-    <>
+    <div className="relative w-full h-screen flex flex-col overflow-hidden items-center justify-between">
       <Image
         src="/common/background.webp"
         alt="background"
@@ -75,35 +71,20 @@ export default function LeaderboardPage() {
       />
       <Header />
 
-      <main className="flex-1 flex flex-col items-center justify-center relative z-10 w-full px-6 py-6">
-        <div className="flex flex-col items-center w-full max-w-lg gap-6">
-          {/* Title row */}
-          <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              className="p-2 text-brand-primary opacity-70 hover:opacity-100 transition-opacity"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Link>
-            <h1 className="text-xl font-light text-brand-primary tracking-widest uppercase">
-              Leaderboard
-            </h1>
-            <button
-              onClick={refetch}
-              className="p-2 text-brand-primary opacity-70 hover:opacity-100 transition-opacity"
-            >
-              <RefreshCw className="w-4 h-4" />
-            </button>
-          </div>
+      <main className="flex-1 flex flex-col items-center justify-center z-10 w-full px-8 overflow-y-auto scrollbar-hide">
+        <div className="flex flex-col items-center justify-center w-full max-w-lg gap-8 mx-auto">
+          <h1 className="text-white text-5xl font-black uppercase tracking-widest text-center drop-shadow-sm">
+            Leaderboard
+          </h1>
 
           {/* Content */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full"
+            className="w-full flex flex-col items-center"
           >
             {loading ? (
-              <div className="flex items-center justify-center py-16 text-brand-primary font-light uppercase tracking-widest">
+              <div className="flex items-center justify-center py-16 text-white font-light uppercase tracking-widest">
                 Loading leaderboard…
               </div>
             ) : (
@@ -116,7 +97,7 @@ export default function LeaderboardPage() {
             onClick={handlePlayAgain}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
-            className="flex items-center gap-3 px-12 py-3 rounded-full font-bold text-lg uppercase tracking-widest bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] text-brand-primary transition-all"
+            className="w-full h-14 rounded-full uppercase tracking-[0.2em] font-black text-lg transition-all bg-transparent border-[2px] border-white shadow-[0_4px_0_0_#FFFFFF] text-white active:translate-y-[2px] active:shadow-[0_2px_0_0_#FFFFFF]"
           >
             <span className="relative">Play Again</span>
           </motion.button>
@@ -124,6 +105,6 @@ export default function LeaderboardPage() {
       </main>
 
       <Footer />
-    </>
+    </div>
   );
 }

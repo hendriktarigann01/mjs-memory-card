@@ -49,15 +49,15 @@ export const Card = memo(function Card({
       >
         {/* ── Card Back ─────────────────────────────────────── */}
         <div
-          className="relative w-full h-full bg-brand-primary flex items-center justify-center overflow-hidden"
+          className="relative w-full h-full bg-brand-primary flex items-center justify-center overflow-hidden rounded-2xl"
           style={{ backfaceVisibility: "hidden" }}
         >
-          <div className="relative w-full h-full p-4 flex items-center justify-center">
+          <div className="relative w-full h-full flex items-center justify-center">
             <Image
-              src="/common/logo-card.webp"
+              src="/in-lite.webp"
               alt="Logo Card"
               fill
-              className="object-contain p-4"
+              className="object-contain p-12"
               priority
             />
           </div>
@@ -65,11 +65,12 @@ export const Card = memo(function Card({
 
         {/* ── Card Front ────────────────────────────────────── */}
         <div
-          className={cn(
-            "absolute inset-0 overflow-hidden flex items-center justify-center",
-            isMatched ? "bg-[#FFECC5]" : "bg-[#FFECC5]",
-          )}
-          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+          className="absolute inset-0 overflow-hidden flex items-center justify-center bg-transparent"
+          style={{
+            backfaceVisibility: "hidden",
+            transform: "rotateY(180deg)",
+            border: "2px solid #972D59",
+          }}
         >
           <Image
             src={getCardImageSrc(imageId)}
@@ -77,8 +78,6 @@ export const Card = memo(function Card({
             fill
             className="object-contain p-5"
           />
-
-          {/* Matched shimmer overlay */}
           {isMatched && (
             <motion.div
               className="absolute inset-0"

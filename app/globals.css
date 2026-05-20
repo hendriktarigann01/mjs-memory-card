@@ -2,9 +2,9 @@
 @import "tw-animate-css";
 
 @theme inline {
-  --color-brand-primary: #191B34; /* blue */
-  --color-brand-primary-dark: #212121; /* dark-gray */
-  --color-brand-primary-light: #FFAC00CC; /* light-amber */
+  --color-brand-primary: #381C59; /* blue */
+  --color-brand-primary-dark:  #FFFFFF; /* dark-gray */
+  --color-brand-primary-light: #FFFFFF; /* light-amber */
 }
 
 :root {

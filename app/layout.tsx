@@ -9,8 +9,9 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Scream Challenge",
-  description: "How loud can you scream?",
+  title: "Memory Master - Card Matching Game",
+  description:
+    "Train your memory and concentration with this fun card matching game",
 };
 
 export default function RootLayout({
@@ -20,8 +21,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={plusJakartaSans.variable}>
-      <body className="font-plus-jakarta antialiased bg-[#0169dc]">
-        <div className="min-h-screen flex flex-col relative overflow-hidden bg-brand-primary-dark">
+      <body className="font-plus-jakarta antialiased">
+        <div className="min-h-screen flex flex-col m-0 relative overflow-hidden">
           {children}
         </div>
       </body>
