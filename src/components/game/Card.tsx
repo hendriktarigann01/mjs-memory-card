@@ -20,6 +20,7 @@ export const Card = memo(function Card({
   isFlipped,
   isMatched,
   onClick,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   size = "default",
 }: CardProps) {
   return (

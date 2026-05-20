@@ -17,6 +17,7 @@ export function Header({
   onSoundToggle,
   className,
 }: HeaderProps) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const pathname = usePathname();
   return (
     <header

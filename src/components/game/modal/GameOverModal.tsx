@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { Medal } from "lucide-react";
 import { formatTime } from "@/lib/utils";

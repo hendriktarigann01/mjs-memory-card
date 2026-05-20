@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
-import { useLayoutVariant } from "@/hooks/useLayoutVariant";
 import { RefreshCw, ArrowLeft } from "lucide-react";
 import { PodiumPlayer } from "@/components/leaderboard/PodiumPlayer";
 import { RankRow } from "@/components/leaderboard/RankRow";
@@ -19,12 +18,10 @@ import Image from "next/image";
 
 interface LeaderboardContentProps {
   entries: LeaderboardEntry[];
-  layout: "default" | "signage";
 }
 
 const LeaderboardContent = memo(function LeaderboardContent({
   entries,
-  layout,
 }: LeaderboardContentProps) {
   if (entries.length === 0) {
     return (
@@ -36,37 +33,23 @@ const LeaderboardContent = memo(function LeaderboardContent({
 
   const [first, second, third, ...rest] = entries;
 
-  const podium = (
-    <div className="flex items-end justify-center">
-      {third && <PodiumPlayer entry={third} rank={3} />}
-      {first && <PodiumPlayer entry={first} rank={1} />}
-      {second && <PodiumPlayer entry={second} rank={2} />}
-    </div>
-  );
-
-  const rankList = rest.length > 0 && (
-    <div className="space-y-2">
-      {rest.map((entry, i) => (
-        <RankRow key={entry.id} entry={entry} rank={i + 4} />
-      ))}
-    </div>
-  );
-
-  if (layout === "signage") {
-    return (
-      <div className="flex items-stretch gap-16">
-        <div className="flex-1 flex flex-col justify-end">{podium}</div>
-        <div className="flex-1 flex flex-col justify-center gap-2 pt-4">
-          {rankList}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-8">
-      {podium}
-      {rankList}
+      {/* Podium */}
+      <div className="flex items-end justify-center">
+        {third && <PodiumPlayer entry={third} rank={3} />}
+        {first && <PodiumPlayer entry={first} rank={1} />}
+        {second && <PodiumPlayer entry={second} rank={2} />}
+      </div>
+
+      {/* Rank list */}
+      {rest.length > 0 && (
+        <div className="space-y-2">
+          {rest.map((entry, i) => (
+            <RankRow key={entry.id} entry={entry} rank={i + 4} />
+          ))}
+        </div>
+      )}
     </div>
   );
 });
@@ -77,13 +60,12 @@ LeaderboardContent.displayName = "LeaderboardContent";
 
 export default function LeaderboardPage() {
   const router = useRouter();
-  const variant = useLayoutVariant();
   const { leaderboard, loading, refetch } = useLeaderboard();
 
   const handlePlayAgain = useCallback(() => router.push("/"), [router]);
 
-  const pageWrapper = (children: React.ReactNode) => (
-    <div className="min-h-screen bg-brand-primary-dark flex flex-col relative overflow-hidden">
+  return (
+    <>
       <Image
         src="/common/background.webp"
         alt="background"
@@ -92,100 +74,56 @@ export default function LeaderboardPage() {
         priority
       />
       <Header />
-      {children}
-      <Footer />
-    </div>
-  );
 
-  // ── Desktop layout ─────────────────────────────────────────
+      <main className="flex-1 flex flex-col items-center justify-center relative z-10 w-full px-6 py-6">
+        <div className="flex flex-col items-center w-full max-w-lg gap-6">
+          {/* Title row */}
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="p-2 text-brand-primary opacity-70 hover:opacity-100 transition-opacity"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </Link>
+            <h1 className="text-xl font-light text-brand-primary tracking-widest uppercase">
+              Leaderboard
+            </h1>
+            <button
+              onClick={refetch}
+              className="p-2 text-brand-primary opacity-70 hover:opacity-100 transition-opacity"
+            >
+              <RefreshCw className="w-4 h-4" />
+            </button>
+          </div>
 
-  if (variant === "desktop") {
-    return pageWrapper(
-      <main className="flex-1 flex flex-col justify-center items-center px-16 py-6 gap-8 relative z-10">
-        {/* Title */}
-        <div className="flex items-center gap-4">
-          <Link
-            href="/"
-            className="p-2 text-brand-primary opacity-70 hover:opacity-100 transition-opacity"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Link>
-          <h1 className="text-xl font-light text-brand-primary tracking-widest uppercase">
-            Leaderboard
-          </h1>
-          <button
-            onClick={refetch}
-            className="p-2 text-brand-primary opacity-70 hover:opacity-100 transition-opacity"
-          >
-            <RefreshCw className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Content */}
-        <div className="w-full max-w-5xl">
+          {/* Content */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
+            className="w-full"
           >
             {loading ? (
               <div className="flex items-center justify-center py-16 text-brand-primary font-light uppercase tracking-widest">
                 Loading leaderboard…
               </div>
             ) : (
-              <LeaderboardContent entries={leaderboard} layout="signage" />
+              <LeaderboardContent entries={leaderboard} />
             )}
           </motion.div>
+
+          {/* Play Again button */}
+          <motion.button
+            onClick={handlePlayAgain}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
+            className="flex items-center gap-3 px-12 py-3 rounded-full font-bold text-lg uppercase tracking-widest bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] text-brand-primary transition-all"
+          >
+            <span className="relative">Play Again</span>
+          </motion.button>
         </div>
-      </main>,
-    );
-  }
+      </main>
 
-  // ── Mobile / Default layout ────────────────────────────────
-
-  return pageWrapper(
-    <main className="flex-1 flex flex-col items-center justify-center px-6 py-6 gap-6 max-w-lg mx-auto w-full relative z-10">
-      {/* Title row */}
-      <div className="flex items-center gap-3">
-        <Link
-          href="/"
-          className="p-2 text-brand-primary opacity-70 hover:opacity-100 transition-opacity"
-        >
-          <ArrowLeft className="w-4 h-4" />
-        </Link>
-        <h1 className="text-xl font-light text-brand-primary tracking-widest uppercase">
-          Leaderboard
-        </h1>
-        <button
-          onClick={refetch}
-          className="p-2 text-brand-primary opacity-70 hover:opacity-100 transition-opacity"
-        >
-          <RefreshCw className="w-4 h-4" />
-        </button>
-      </div>
-      {/* Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full"
-      >
-        {loading ? (
-          <div className="flex items-center justify-center py-16 text-brand-primary font-light uppercase tracking-widest">
-            Loading leaderboard…
-          </div>
-        ) : (
-          <LeaderboardContent entries={leaderboard} layout="default" />
-        )}
-      </motion.div>
-      {/* Play Again button */}
-      <motion.button
-        onClick={handlePlayAgain}
-        whileHover={{ scale: 1.04 }}
-        whileTap={{ scale: 0.96 }}
-        className="flex items-center gap-3 px-12 py-3 rounded-full font-bold text-lg uppercase tracking-widest bg-white border-[3px] border-brand-primary shadow-[0_4px_0_0_#191B34] text-brand-primary transition-all"
-      >
-        <span className="relative">Play Again</span>
-      </motion.button>
-    
-    </main>
+      <Footer />
+    </>
   );
 }
